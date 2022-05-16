@@ -9,5 +9,5 @@ Eerste variant, dit is puur de basis nog niet alle pagina's verwerkt.
 4. Login (eerste pagina indien niet ingelogd)
 
 ## Packages nodig:
-- PyQt6 (heeft wat betere runtime dan 5)
+- PyQt6 (heeft wat betere run-time dan 5)
 - functools (indien je deze nog niet standaard geinstalleerd hebt)
