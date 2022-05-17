@@ -5,8 +5,8 @@ from components.menu import Menu
 from components.mainHome import Main
 
 class HomePage(QWidget):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__()
         
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)

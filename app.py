@@ -26,7 +26,7 @@ class App(QMainWindow):
         # Set all widgets
         self.setCentralWidget(self.stackedWidget)
         
-        # Init button interactions
+
     def connectBtn(self):    
         buttons = [
             self.home.menu.homeBtn,
