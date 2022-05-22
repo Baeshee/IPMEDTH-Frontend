@@ -83,6 +83,12 @@ QPushButton{
       </item>
       <item>
        <widget class="QPushButton" name="metingBtn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="font">
          <font>
           <family>Calibri</family>
@@ -91,6 +97,16 @@ QPushButton{
         </property>
         <property name="text">
          <string>Meting</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../../../Downloads/black-24dp/2x/baseline_videocam_black_24dp.png</normaloff>../../../../../Downloads/black-24dp/2x/baseline_videocam_black_24dp.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
         </property>
        </widget>
       </item>

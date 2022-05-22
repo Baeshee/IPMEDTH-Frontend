@@ -27,10 +27,10 @@ class VideoThread(QThread):
         self.cap.release()
                 
 class Main(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, app):
+        super(Main, self).__init__()
         uic.loadUi('layout/metingComponent.ui', self)
-        
+        self.app = app
         self.stream_label = self.videoLabel
         
         self.thread = VideoThread()
@@ -49,5 +49,5 @@ class Main(QWidget):
         h, w, ch = rgb_image.shape
         bytes_per_line = ch * w
         convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
-        p = convert_to_Qt_format.scaled(self.stream_label.geometry().width(), self.stream_label.geometry().height(), Qt.AspectRatioMode.KeepAspectRatio)
-        return QPixmap.fromImage(p)
+        # p = convert_to_Qt_format.scaled(self.stream_label.geometry().width(), self.stream_label.geometry().height(), Qt.AspectRatioMode.KeepAspectRatio)
+        return QPixmap.fromImage(convert_to_Qt_format)
