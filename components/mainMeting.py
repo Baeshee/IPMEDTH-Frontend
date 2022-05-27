@@ -8,13 +8,20 @@ import cv2 as cv
 import numpy as np
 import os
 
+from handlers.hand_detect_module import handDetect
+
 class VideoThread(QThread):
     change_pixmap_signal = pyqtSignal(np.ndarray)
+    
+    def __init__(self):
+        super(VideoThread, self).__init__()
+        self.detector = handDetect(detectCon=0.8, maxHands=2)
     
     def run(self):
         self.cap = cv.VideoCapture(0)
         while True:
             ret, img = self.cap.read()
+            hands, img = self.detector.staticImage(img)
             # global cv_img
             # cv_img = img
             if ret:
