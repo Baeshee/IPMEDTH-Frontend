@@ -2,6 +2,9 @@ import cv2 as cv
 import mediapipe as mp
 import math
 
+import json
+from itertools import islice
+
 class handDetect:
     def __init__(self, mode=False, maxHands=1, detectCon=0.8, trackCon=0.8):
         self.drawUtils = mp.solutions.drawing_utils
@@ -19,8 +22,7 @@ class handDetect:
                                         min_tracking_confidence=self.trackCon)
         
         self.lmList = []
-        self.lmNames = ["WRIST",
-                        "THUMB_CMC",
+        self.lmNames = ["THUMB_CMC",
                         "THUMB_MCP", 
                         "THUMB_IP", 
                         "THUMB_TIP",
@@ -39,7 +41,8 @@ class handDetect:
                         "PINKY_MCP",
                         "PINKY_PIP",
                         "PINKY_DIP",
-                        "PINKY_TIP"]
+                        "PINKY_TIP",
+                        "WRIST"]
     
     # Function which takes the photo from the main function
     # and extracts all landmarks and hand features and also
@@ -50,114 +53,66 @@ class handDetect:
         # converts it to a centrain color mode
         imageRGB = cv.cvtColor(img, cv.COLOR_BGR2RGB)
         self.result = self.hands.process(imageRGB)
-        dHands = []
+        dHands = {}
         h, w, c = img.shape
         
         if self.result.multi_hand_landmarks:
             for hType, lMarks in zip(self.result.multi_handedness, self.result.multi_hand_landmarks):
-                myHand = {}
-                mylmList = []
+                fingers = ["finger_index", "finger_middle", "finger_ring", "finger_pink", "finger_thumb", "wrist"]
+                lmrks_loc = []
                 
-                # Extracting the x, y and z coordinated form the handlandmarks
-                # and saving them to a dictionary
-                for id, lm in enumerate(lMarks.landmark):
-                    px, py, pz = int(lm.x * w), int(lm.y * h), int(lm.z * w)
-                    mylmList.append({'name': self.lmNames[id],
-                                    'id': id,
-                                    'x_value': px,
-                                    'y_value': py,
-                                    'z_value': pz})
-
-                myHand["lmList"] = mylmList
-                myHand["score"] = hType.classification[0].score
+                x_max = 0
+                y_max = 0
+                x_min = w
+                y_min = h
+                padding = 30
+                
                 
                 # Checks which hand is being identified
                 # Note: if there are 2 hands returns both their hTypes
                 # for more explicit distinction
                 if flipType:
                     if hType.classification[0].label == "Right":
-                        myHand["type"] = "Left"
+                        dHands["hand_type"] = "Left"
                     else:
-                        myHand["type"] = "Right"
+                        dHands["hand_type"] = "Right"
                 else:
-                    myHand["type"] = hType.classification[0].label
-                dHands.append(myHand)
+                    dHands["hand_type"] = hType.classification[0].label
+                    
+                dHands["hand_score"] = hType.classification[0].score
+                
+                # Extracting the x, y and z coordinated form the handlandmarks
+                # and saving them to a dictionary
+                for id, lm in enumerate(lMarks.landmark):
+                    px, py, pz = int(lm.x * w), int(lm.y * h), int(lm.z * w)
+                    lmrks_loc.append({'x': px, 'y': py, 'z': pz})
+                    lmrks = dict(zip(self.lmNames, lmrks_loc))             
+                    
+                    if px > x_max:
+                        x_max = px
+                    if px < x_min:
+                        x_min = px
+                    if py > y_max:
+                        y_max = py
+                    if py < y_min:
+                        y_min = py
+                
+                
+                items = sorted(lmrks.items())
+                rst = [dict(items[i:i+4]) for i in range(0, len(items), 4)]
+                data = dict(zip(fingers, rst))
+                dHands["landmarks"] = data
                 
                 # Draws the landmarks on the image
                 if draw:
-                    self.drawUtils.draw_landmarks(img, lMarks, self.mpHands.HAND_CONNECTIONS, self.drawStyle.get_default_hand_landmarks_style(),
-                    self.drawStyle.get_default_hand_connections_style())
+                    self.drawUtils.draw_landmarks(img, lMarks, self.mpHands.HAND_CONNECTIONS, self.drawStyle.DrawingSpec(color=(0,255,0)),
+                    self.drawStyle.DrawingSpec(color=(255,255,255)))
                 
+                # Resizes the image to only return a bounding box fitted result
+                # img = img[(y_min - padding):(y_max + padding), (x_min - padding):(x_max + padding)]
         # Returning statement
         if draw:
             return dHands, img
         else:
             return dHands
-
-
-#def createAnnotedImage(self):    
-#         sender = self.sender()
-#         side = ""
         
-#         if(sender.text() == "Rechter zijde"):
-#             self.r_cb.setChecked(True)
-#             side = "right"
-#         if(sender.text() == "Bovenkant"):
-#             self.t_cb.setChecked(True)
-#             side = "top"
-#         if(sender.text() == "Voorkant"):
-#             self.f_cb.setChecked(True)
-#             side = "front"
-#         if(sender.text() == "Linker zijde"):
-#             self.l_cb.setChecked(True)
-#             side = "left"
-        
-#         start_time = dt.now()
-#         start_date = start_time.strftime("%d-%m-%Y")
-#         hands, img = self.detector.staticImage(cv_img)
-#         end_time = dt.now()
-#         duration = (end_time - start_time).total_seconds()
-        
-#         # Create a image where the landmarks are stored
-#         cv.imwrite(f"images/PY_testpersoon_{self.pn.value()}_{self.ht.currentText().lower()}_{side}_{start_date}.png", img)
-        
-#         dict = {}
-#         hTypes = []
-#         hScore = []
-#         lmNames = []
-#         lmIds = []
-#         xList = []
-#         yList = []
-#         zList = []
-        
-#         # Extracting all information that are stored in the variables
-#         # so they can be saved to a csv and excel for later use
-#         if hands:
-#             for h in range(0, len(hands)):
-#                 for v in range(0, len(hands[0]['lmList'])):
-#                     hTypes.append(hands[h]['type'])
-#                     hScore.append(hands[h]['score'])
-#                     lmNames.append(hands[h]['lmList'][v]['name'])
-#                     lmIds.append(hands[h]['lmList'][v]['id'])
-#                     xList.append(hands[h]['lmList'][v]['x_value'])
-#                     yList.append(hands[h]['lmList'][v]['y_value'])
-#                     zList.append(hands[h]['lmList'][v]['z_value'])        
-        
-#         dict = {'hand_type': hTypes,
-#                 'hand_score': hScore,
-#                 'landmark_id': lmIds,
-#                 'landmark_name': lmNames,
-#                 'x_value': xList,
-#                 'y_value': yList,
-#                 'z_value': zList,
-#                 'total_run_time': duration,
-#                 'test_date': dt.now().strftime("%d-%m-%Y"),
-#                 'test_time': dt.now().strftime("%H:%M:%S"),
-#                 'annoted_image': f"PY_testpersoon_{self.pn.value()}_{self.ht.currentText().lower()}_{side}_{start_date}.png"}
-        
-#         # Check if there is a csv and a xslx file otherwise
-#         # create a new dataframe and save all the values to the
-#         # dataframe so they can be saved
-        
-#         df = pd.DataFrame(dict)
-#         df.to_csv(f'results/PY_testpersoon_{self.pn.value()}_{self.ht.currentText().lower()}_{side}_{start_date}.csv', encoding='utf-8', index=False)       
