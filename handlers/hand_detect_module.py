@@ -1,6 +1,7 @@
 import cv2 as cv
 import mediapipe as mp
 import math
+import numpy as np
 
 import json
 from itertools import islice
@@ -56,28 +57,27 @@ class handDetect:
         dHands = {}
         h, w, c = img.shape
         
+        x_max = 0
+        y_max = 0
+        x_min = w
+        y_min = h
+        padding = 30
+        
         if self.result.multi_hand_landmarks:
             for hType, lMarks in zip(self.result.multi_handedness, self.result.multi_hand_landmarks):
                 fingers = ["finger_index", "finger_middle", "finger_ring", "finger_pink", "finger_thumb", "wrist"]
                 lmrks_loc = []
                 
-                x_max = 0
-                y_max = 0
-                x_min = w
-                y_min = h
-                padding = 30
-                
-                
                 # Checks which hand is being identified
                 # Note: if there are 2 hands returns both their hTypes
                 # for more explicit distinction
                 if flipType:
-                    if hType.classification[0].label == "Right":
-                        dHands["hand_type"] = "Left"
+                    if hType.classification[0].label.lower() == "right":
+                        dHands["hand_type"] = "left"
                     else:
-                        dHands["hand_type"] = "Right"
+                        dHands["hand_type"] = "right"
                 else:
-                    dHands["hand_type"] = hType.classification[0].label
+                    dHands["hand_type"] = hType.classification[0].label.lower()
                     
                 dHands["hand_score"] = hType.classification[0].score
                 
@@ -109,7 +109,7 @@ class handDetect:
                     self.drawStyle.DrawingSpec(color=(255,255,255)))
                 
                 # Resizes the image to only return a bounding box fitted result
-                # img = img[(y_min - padding):(y_max + padding), (x_min - padding):(x_max + padding)]
+                img_save = img[(y_min - padding):(y_max + padding), (x_min - padding):(x_max + padding)]
         # Returning statement
         if draw:
             return dHands, img

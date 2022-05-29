@@ -1,5 +1,6 @@
 import requests
 from datetime import date
+import json
 
 def loginRequest(email, password):
     url = "https://www.ipmedth.nl/api/auth/login"
@@ -46,7 +47,7 @@ def sessionRequest(token_type, token, patient):
         "date": date.today().strftime("%d-%m-%Y"),
     }
     try:
-        r = requests.post(url, data=body, headers=headers)
+        r = requests.post(url, headers=headers, data=body)
         res = r.json()
         
         if r.status_code == 200:
@@ -67,22 +68,23 @@ def uploadRequest(token_type, token, s_id, handData, imagePath):
         "hand_type": handData["hand_type"],
         "hand_view": handData["hand_view"],
         "hand_score": handData["hand_score"],
-        "finger_thumb": handData["landmarks"]["finger_thumb"],
-        "finger_index": handData["landmarks"]["finger_index"],
-        "finger_middle": handData["landmarks"]["finger_middle"],
-        "finger_ring": handData["landmarks"]["finger_ring"],
-        "finger_pink": handData["landmarks"]["finger_pink"],
-        "wrist": handData["landmarks"]["wrist"],
+        "finger_thumb": json.dumps(handData["landmarks"]["finger_thumb"]),
+        "finger_index": json.dumps(handData["landmarks"]["finger_index"]),
+        "finger_middle": json.dumps(handData["landmarks"]["finger_middle"]),
+        "finger_ring": json.dumps(handData["landmarks"]["finger_ring"]),
+        "finger_pink": json.dumps(handData["landmarks"]["finger_pink"]),
+        "wrist": json.dumps(handData["landmarks"]["wrist"]),
         "image": image
     }
+    
     try:
-        r = requests.post(url, data=body, headers=headers)
+        r = requests.post(url, headers=headers, data=body)
         image.close()
-        # res = r.json()
+        res = r.json()
         
         if r.status_code == 200:
-            return 'Ok', "Saved successfully"
+            return 'Ok', res['message']
         else:
-            return 'Failed', "Failed to save"
+            return 'Failed', res['message']
     except requests.exceptions.HTTPError as e:
         print(e)

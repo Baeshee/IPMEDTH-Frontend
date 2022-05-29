@@ -115,6 +115,7 @@ class Main(QWidget):
                 for key in self.resultaten.keys():
                     status, res = uploadRequest(self.app.token_type, self.app.token, s_id, self.resultaten[key], self.imageNames[key])
                     if status == 'Failed':
+                        print(res)
                         break                    
                 
                 self.app.stackedWidget.setCurrentIndex(1)
