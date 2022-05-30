@@ -1,8 +1,10 @@
-from PyQt6.QtWidgets import QWidget, QHBoxLayout
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QStackedWidget
 from PyQt6 import uic
 
 from components.menu import Menu
 from components.mainMeting import Main
+from components.patientSelect import PatientSelect
+from components.newPatient import NewPatient
 
 class MetingPage(QWidget):
     def __init__(self, app):
@@ -12,9 +14,19 @@ class MetingPage(QWidget):
         
     def initPage(self, app):
         self.app = app
+        self.patient_id = ""
+        self.stackedWidget = QStackedWidget()
+
         self.menu = Menu(self.app)
-        self.main = Main(self.app)
-        wList = [self.menu, self.main]
+        self.main = Main(self.app, self)
+        self.select = PatientSelect(self.app, self, self.main)
+        self.new = NewPatient(self.app, self, self.main)
+        
+        self.stackedWidget.addWidget(self.select)
+        self.stackedWidget.addWidget(self.new)
+        self.stackedWidget.addWidget(self.main)
+        
+        wList = [self.menu, self.stackedWidget]
         
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)

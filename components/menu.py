@@ -30,9 +30,13 @@ class Menu(QWidget):
         # Menu navigation
         if name == 'homeBtn':
             self.app.stackedWidget.setCurrentIndex(1)
+            self.clear()
         elif name == 'metingBtn':
+            self.app.meting.select.getPatients()
+            self.app.meting.stackedWidget.setCurrentIndex(0)
             self.app.stackedWidget.setCurrentIndex(2)
         elif name == 'resultatenBtn':
+            self.clear()
             self.app.stackedWidget.setCurrentIndex(3)
         
         # Logout request
@@ -41,3 +45,7 @@ class Menu(QWidget):
             
             if status == 'Ok':
                 self.app.stackedWidget.setCurrentIndex(0)
+                
+    def clear(self):
+        self.app.meting.select.patientList.clear()
+        self.app.meting.stackedWidget.setCurrentIndex(0)

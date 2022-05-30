@@ -9,6 +9,7 @@ from pages.metingPage import MetingPage
 class App(QMainWindow):
     def __init__(self):
         super(App, self).__init__()
+        self.setMinimumSize(896, 504)
         self.initUi()
         
         # Parameter storage

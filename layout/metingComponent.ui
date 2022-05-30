@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>844</width>
-    <height>493</height>
+    <width>1312</width>
+    <height>729</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,56 +50,57 @@
          <bool>true</bool>
         </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QWidget" name="widget" native="true">
+          <widget class="QPushButton" name="backBtn">
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <property name="spacing">
-             <number>10</number>
-            </property>
-            <property name="sizeConstraint">
-             <enum>QLayout::SetDefaultConstraint</enum>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="QLineEdit" name="lineEdit">
-              <property name="placeholderText">
-               <string>Patient naam</string>
+             <widget class="QLabel" name="patientLabel">
+              <property name="font">
+               <font>
+                <family>Calibri</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Patient:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_4">
-              <property name="maximumSize">
-               <size>
-                <width>30</width>
-                <height>30</height>
-               </size>
+             <widget class="QLabel" name="patientName">
+              <property name="font">
+               <font>
+                <family>Calibri</family>
+                <pointsize>12</pointsize>
+               </font>
               </property>
               <property name="text">
-               <string>PushButton</string>
+               <string>Patient Naam</string>
               </property>
              </widget>
             </item>

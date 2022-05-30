@@ -6,7 +6,6 @@ from PyQt6 import uic
 import sys
 import cv2 as cv
 import numpy as np
-import os
 import shutil
 from functools import partial
 from PIL import Image
@@ -44,10 +43,11 @@ class VideoThread(QThread):
         self.cap.release()
                 
 class Main(QWidget):
-    def __init__(self, app):
+    def __init__(self, app, page):
         super(Main, self).__init__()
         uic.loadUi('layout/metingComponent.ui', self)
         self.app = app
+        self.page = page
         self.connectBtn();
         self.stream_label = self.videoLabel
         
@@ -56,28 +56,38 @@ class Main(QWidget):
         
         self.thread = VideoThread()
         self.thread.change_pixmap_signal.connect(self.update_stream)
-        self.thread.start()
-        
-        if os.path.isdir("temp"):
-            shutil.rmtree("temp")
-        os.mkdir("temp")
         
     def connectBtn(self):    
         buttons = [
-            # Home
             self.duimView,
             self.pinkView,
             self.vingerView,
             self.rugView,
-            self.uploadBtn
         ]
     
         for btn in buttons:
             btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
         
+        # Isolated calls
+        self.backBtn.clicked.connect(self.back)
+        self.uploadBtn.clicked.connect(self.upload)
+
+    
+    def back(self):
+        self.page.patient_id = ''
+        self.app.meting.select.getPatients()
+        self.thread.exit()
+        self.page.stackedWidget.setCurrentIndex(0)
+        
+        
     def handleBtn(self, name):
         sender = self.sender()
-        data = handData
+        if len(handData) != 0:
+            data = handData
+            print('Meting geslaagd!')
+        else:
+            print('Meting mislukt!')
+            return
         img = Image.fromarray(cv.cvtColor(handImg, cv.COLOR_BGR2RGB))
         
         if name == 'duimView':
@@ -109,19 +119,21 @@ class Main(QWidget):
             img.save(path, format="PNG")
             self.imageNames['backView'] = path
         
-        if name == 'uploadBtn':
-            status, s_id = sessionRequest(self.app.token_type, self.app.token, 2)
-            if status == 'Ok':
-                for key in self.resultaten.keys():
-                    status, res = uploadRequest(self.app.token_type, self.app.token, s_id, self.resultaten[key], self.imageNames[key])
-                    if status == 'Failed':
-                        print(res)
-                        break                    
-                
-                self.app.stackedWidget.setCurrentIndex(1)
-                shutil.rmtree("temp") 
-            else: 
-                print(res)
+    def upload(self):
+        status, s_id = sessionRequest(self.app.token_type, self.app.token, self.page.patient_id)
+        if status == 'Ok':
+            for key in self.resultaten.keys():
+                status, res = uploadRequest(self.app.token_type, self.app.token, s_id, self.resultaten[key], self.imageNames[key])
+                if status == 'Failed':
+                    print(res)
+                    break                    
+            
+            self.thread.exit()
+            self.page.stackedWidget.setCurrentIndex(0)
+            self.app.stackedWidget.setCurrentIndex(1)
+            shutil.rmtree("temp") 
+        else: 
+            print(res)
         
     @pyqtSlot(np.ndarray)
     def update_stream(self, img):
