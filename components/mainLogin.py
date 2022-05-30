@@ -19,6 +19,7 @@ class Main(QWidget):
         
     def connectClickEvent(self):
         self.showHide.mousePressEvent = partial(self.handleClickEvent, self.showHide.objectName())
+        self.passwordField.returnPressed.connect(self.handleLogin)
 
 
     def handleClickEvent(self, event, object):
@@ -32,10 +33,10 @@ class Main(QWidget):
     
         
     def connectBtn(self):    
-        self.loginBtn.clicked.connect(self.handleBtn)
+        self.loginBtn.clicked.connect(self.handleLogin)
     
         
-    def handleBtn(self, app):
+    def handleLogin(self):
         status, res = loginRequest(self.emailField.text(), self.passwordField.text())
         if status == 'Ok':
             self.app.token = res[0]
