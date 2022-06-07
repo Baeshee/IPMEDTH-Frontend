@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QMainWindow, QApplication, QStackedWidget
-from PyQt6 import uic
+from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget
+from PyQt5 import uic, QtGui
 import sys
 
 from pages.loginPage import LoginPage
@@ -9,7 +9,9 @@ from pages.metingPage import MetingPage
 class App(QMainWindow):
     def __init__(self):
         super(App, self).__init__()
-        self.setMinimumSize(896, 504)
+        self.setWindowTitle("Handmetingen Tool")
+        self.setWindowIcon(QtGui.QIcon("icons/app_icon.png"))
+        self.setMinimumSize(1600 , 900)
         self.initUi()
         
         # Parameter storage

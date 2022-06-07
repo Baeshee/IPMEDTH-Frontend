@@ -23,7 +23,8 @@ class handDetect:
                                         min_tracking_confidence=self.trackCon)
         
         self.lmList = []
-        self.lmNames = ["THUMB_CMC",
+        self.lmNames = ["WRIST",
+                        "THUMB_CMC",
                         "THUMB_MCP", 
                         "THUMB_IP", 
                         "THUMB_TIP",
@@ -43,7 +44,7 @@ class handDetect:
                         "PINKY_PIP",
                         "PINKY_DIP",
                         "PINKY_TIP",
-                        "WRIST"]
+                        ]
     
     # Function which takes the photo from the main function
     # and extracts all landmarks and hand features and also
@@ -85,8 +86,7 @@ class handDetect:
                 # and saving them to a dictionary
                 for id, lm in enumerate(lMarks.landmark):
                     px, py, pz = int(lm.x * w), int(lm.y * h), int(lm.z * w)
-                    lmrks_loc.append({'x': px, 'y': py, 'z': pz})
-                    lmrks = dict(zip(self.lmNames, lmrks_loc))             
+                    lmrks_loc.append({'x': px, 'y': py})
                     
                     if px > x_max:
                         x_max = px
@@ -97,6 +97,7 @@ class handDetect:
                     if py < y_min:
                         y_min = py
                 
+                lmrks = dict(zip(self.lmNames, lmrks_loc))  
                 
                 items = sorted(lmrks.items())
                 rst = [dict(items[i:i+4]) for i in range(0, len(items), 4)]
@@ -105,8 +106,8 @@ class handDetect:
                 
                 # Draws the landmarks on the image
                 if draw:
-                    self.drawUtils.draw_landmarks(img, lMarks, self.mpHands.HAND_CONNECTIONS, self.drawStyle.DrawingSpec(color=(0,255,0)),
-                    self.drawStyle.DrawingSpec(color=(255,255,255)))
+                    self.drawUtils.draw_landmarks(img, lMarks, self.mpHands.HAND_CONNECTIONS, self.drawStyle.get_default_hand_landmarks_style(),
+                    self.drawStyle.get_default_hand_connections_style())
                 
                 # Resizes the image to only return a bounding box fitted result
                 img_save = img[(y_min - padding):(y_max + padding), (x_min - padding):(x_max + padding)]

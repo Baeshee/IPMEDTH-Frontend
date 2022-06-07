@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QWidget
-from PyQt6 import uic
+from PyQt5.QtWidgets import QWidget
+from PyQt5 import uic
 
 from functools import partial
 import os
@@ -41,6 +41,8 @@ class PatientSelect(QWidget):
         if name == "switchBtn":
             self.page.stackedWidget.setCurrentIndex(1)
             self.patientNameField.setText('')
+    
+    
             
     def getPatients(self):
         status, res = getPatientRequest(self.app.token_type, self.app.token)
