@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QWidget, QLineEdit
-from PyQt6.QtGui import QPixmap
-from PyQt6 import uic
+from PyQt5.QtWidgets import QWidget, QLineEdit
+from PyQt5.QtGui import QPixmap
+from PyQt5 import uic
 
 from functools import partial
 

@@ -74,7 +74,7 @@
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap>../../../../../Downloads/logo-2x.png</pixmap>
+               <pixmap>../icons/revalidatie_friesland_logo.png</pixmap>
               </property>
               <property name="scaledContents">
                <bool>true</bool>

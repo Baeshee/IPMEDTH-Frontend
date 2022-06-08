@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QWidget
-from PyQt6.QtCore import QDate
-from PyQt6 import uic
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QDate
+from PyQt5 import uic
 
 from functools import partial
 import os

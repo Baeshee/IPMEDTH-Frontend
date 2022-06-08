@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QPushButton, QWidget
-from PyQt6 import uic
+from PyQt5.QtWidgets import QPushButton, QWidget
+from PyQt5 import uic
 
 class Main(QWidget):
     def __init__(self):
