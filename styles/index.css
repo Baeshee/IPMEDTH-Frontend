@@ -1,4 +1,47 @@
+QWidget{
+    font-family: Calibri;
+}
+
+QPushButton{
+    color: #fff;
+    background-color: #00aaa6;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QPushButton:hover{
+    background-color: #666666;
+}
+
+#Form{
+    background-color: #f6f6f6;
+}
+
 #loginLayout{
     border-radius: 15px;
     background-color: white;
+}
+
+.QLineEdit{
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#menu{
+    background-color: #666666;
+}
+
+#menu .QPushButton{
+    background-color: #666666;
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 10px 20px;
+}
+
+#menu .QPushButton:hover{
+    background-color: #00aaa6;
 }

@@ -12,7 +12,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>150</width>
+    <width>200</width>
     <height>16777215</height>
    </size>
   </property>
@@ -20,13 +20,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-	background-color: grey;
-}
-
-QPushButton{
-	background-color: white;
-}</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -52,21 +46,24 @@ QPushButton{
        <height>0</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>10</number>
+       <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QPushButton" name="homeBtn">
@@ -100,7 +97,7 @@ QPushButton{
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../../../Downloads/black-24dp/2x/baseline_videocam_black_24dp.png</normaloff>../../../../../Downloads/black-24dp/2x/baseline_videocam_black_24dp.png</iconset>
+          <normaloff>../../../Downloads/black-24dp/2x/baseline_videocam_black_24dp.png</normaloff>../../../Downloads/black-24dp/2x/baseline_videocam_black_24dp.png</iconset>
         </property>
         <property name="iconSize">
          <size>

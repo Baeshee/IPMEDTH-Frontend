@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>594</width>
+    <width>973</width>
     <height>715</height>
    </rect>
   </property>
@@ -54,8 +54,8 @@
           <widget class="QFrame" name="loginContainer">
            <property name="maximumSize">
             <size>
-             <width>250</width>
-             <height>400</height>
+             <width>400</width>
+             <height>450</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -101,7 +101,7 @@
              <widget class="QFrame" name="email">
               <property name="maximumSize">
                <size>
-                <width>250</width>
+                <width>400</width>
                 <height>300</height>
                </size>
               </property>
@@ -172,7 +172,7 @@
              <widget class="QFrame" name="password">
               <property name="maximumSize">
                <size>
-                <width>250</width>
+                <width>400</width>
                 <height>300</height>
                </size>
               </property>
@@ -221,7 +221,7 @@
                 <widget class="QFrame" name="fieldContainer">
                  <property name="maximumSize">
                   <size>
-                   <width>250</width>
+                   <width>400</width>
                    <height>60</height>
                   </size>
                  </property>
@@ -233,7 +233,7 @@
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_2">
                   <property name="spacing">
-                   <number>0</number>
+                   <number>10</number>
                   </property>
                   <property name="leftMargin">
                    <number>0</number>
@@ -253,6 +253,12 @@
                      <size>
                       <width>0</width>
                       <height>25</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>260</width>
+                      <height>16777215</height>
                      </size>
                     </property>
                     <property name="font">
@@ -276,8 +282,8 @@
                    <widget class="QLabel" name="showHide">
                     <property name="maximumSize">
                      <size>
-                      <width>20</width>
-                      <height>20</height>
+                      <width>30</width>
+                      <height>30</height>
                      </size>
                     </property>
                     <property name="text">

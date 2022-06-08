@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget
-from PyQt5 import uic, QtGui
+from PyQt5 import uic, QtGui, QtCore
 import sys
 
 from pages.loginPage import LoginPage
@@ -12,6 +12,7 @@ class App(QMainWindow):
         self.setWindowTitle("Handmetingen Tool")
         self.setWindowIcon(QtGui.QIcon("icons/app_icon.png"))
         self.setMinimumSize(1600 , 900)
+        QtGui.QFontDatabase.addApplicationFont("styles/fonts/Humanist521LightBT.ttf")
         self.initUi()
         
         # Parameter storage
@@ -39,6 +40,7 @@ class App(QMainWindow):
     
 # Initialize the application
 app = QApplication(sys.argv)
+app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 AppWindow = App()
 AppWindow.show()
 app.exec()

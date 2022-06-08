@@ -3,13 +3,11 @@ from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import uic
 
-import sys
 import cv2 as cv
 import numpy as np
 import shutil
 from functools import partial
 from PIL import Image
-import time
 import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
