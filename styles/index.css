@@ -19,8 +19,12 @@ QPushButton:hover{
 }
 
 #loginLayout{
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: white;
+}
+
+#loginSection {
+    background-color: #333;
 }
 
 .QLineEdit{
