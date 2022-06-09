@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
+from PyQt5.QtGui import QIcon
 
 from functools import partial
 import os
@@ -16,6 +17,8 @@ class PatientSelect(QWidget):
         self.main = main
         self.patient_ids = {}
         self.connectBtn()
+        
+        self.searchBtn.setIcon(QIcon('icons/ui/search.png'))
 
     def connectBtn(self):
         buttons = [
@@ -29,14 +32,18 @@ class PatientSelect(QWidget):
         
     def handleBtn(self, name):
         if name == 'continueBtn':
-            self.page.patient_id = self.get_key_from_patient(self.patientList.currentItem().text())
-            self.main.patientName.setText(self.patientList.currentItem().text())
-            self.patientList.clear()
-            if os.path.isdir("temp"):
-                shutil.rmtree("temp")
-            os.mkdir("temp")
-            self.main.thread.start()
-            self.page.stackedWidget.setCurrentIndex(2)
+            if self.patientList.currentItem():
+                self.page.patient_id = self.get_key_from_patient(self.patientList.currentItem().text())
+                if self.page.patient_id:
+                    self.main.patientName.setText(self.patientList.currentItem().text())
+                    self.patientList.clear()
+                    if os.path.isdir("temp"):
+                        shutil.rmtree("temp")
+                    os.mkdir("temp")
+                    self.main.thread.start()
+                    self.page.stackedWidget.setCurrentIndex(2)
+            else:
+                print("Geen patient geselecteerd!")
 
         if name == "switchBtn":
             self.page.stackedWidget.setCurrentIndex(1)

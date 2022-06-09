@@ -8,6 +8,7 @@ QPushButton{
     border: none;
     border-radius: 5px;
     padding: 5px;
+    font-weight: bold;
 }
 
 QPushButton:hover{
@@ -38,15 +39,13 @@ QPushButton:hover{
     background-color: #666666;
 }
 
-#menu .QPushButton{
-    background-color: #666666;
+#menu QWidget{
     color: white;
     border: none;
     border-radius: 0;
-    padding: 10px 20px;
 }
 
-#menu .QPushButton:hover{
+#menu QWidget:hover{
     background-color: #00aaa6;
 }
 
@@ -70,4 +69,8 @@ QPushButton:hover{
 
 #resultBtnBig:hover, #metingBtnBig:hover{
     background-color: #f49a3f;
+}
+
+.QLineEdit:focus, .QDateEdit:focus{
+    border: 2px solid #00aaa6;
 }

@@ -30,18 +30,21 @@ class NewPatient(QWidget):
         
     def handleBtn(self, name):
         if name == 'continueBtn':
-            status, res = makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate())
-            if status == 'Ok':
-                self.page.patient_id = res
-                self.main.patientName.setText(self.patientNameField.text())
-                self.patientNameField.setText('')
-                self.main.thread.start()
-                if os.path.isdir("temp"):
-                    shutil.rmtree("temp")
-                os.mkdir("temp")
-                self.page.stackedWidget.setCurrentIndex(2)
-            else: 
-                print(res)
+            if self.patientNameField.text() != '' and self.emailField.text() != '' and self.dateField.date().toPyDate() != '':
+                status, res = makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate())
+                if status == 'Ok':
+                    self.page.patient_id = res
+                    self.main.patientName.setText(self.patientNameField.text())
+                    self.patientNameField.setText('')
+                    self.main.thread.start()
+                    if os.path.isdir("temp"):
+                        shutil.rmtree("temp")
+                    os.mkdir("temp")
+                    self.page.stackedWidget.setCurrentIndex(2)
+                else: 
+                    print(res)
+            else:
+                print("Alle velden moeten ingevuld zijn!")
             
         if name == "switchBtn":
             self.patientNameField.setText('')

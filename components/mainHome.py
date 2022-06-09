@@ -26,7 +26,7 @@ class Main(QWidget):
 
     def handleClickEvent(self, event, object):
         if event == 'metingBtnBig':
-            
+            self.app.meting.select.getPatients()
             self.app.stackedWidget.setCurrentIndex(2)
         if event == 'metingBtnBig':
             self.app.stackedWidget.setCurrentIndex(3)

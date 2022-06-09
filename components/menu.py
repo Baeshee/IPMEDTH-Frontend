@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
 
 from functools import partial
 
@@ -10,10 +11,15 @@ class Menu(QWidget):
         super(Menu, self).__init__()
         uic.loadUi('layout/menu.ui', self)
         self.app = app
-        self.connectBtn()
+        self.connectClickEvent()
+        
+        self.homeIcon.setPixmap(QPixmap('icons/ui/home_white.png'))
+        self.metingIcon.setPixmap(QPixmap('icons/ui/meting_white.png'))
+        self.resultatenIcon.setPixmap(QPixmap('icons/ui/results_white.png'))
+        self.logoutIcon.setPixmap(QPixmap('icons/ui/logout_white.png'))
     
     
-    def connectBtn(self):    
+    def connectClickEvent(self):    
         buttons = [
             # Home
             self.homeBtn,
@@ -23,24 +29,24 @@ class Menu(QWidget):
         ]
     
         for btn in buttons:
-            btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
+            btn.mousePressEvent = partial(self.handleClickEvent, btn.objectName())
     
         
-    def handleBtn(self, name):
+    def handleClickEvent(self, event, name):
         # Menu navigation
-        if name == 'homeBtn':
+        if event == 'homeBtn':
             self.app.stackedWidget.setCurrentIndex(1)
             self.clear()
-        elif name == 'metingBtn':
+        elif event == 'metingBtn':
             self.app.meting.select.getPatients()
             self.app.meting.stackedWidget.setCurrentIndex(0)
             self.app.stackedWidget.setCurrentIndex(2)
-        elif name == 'resultatenBtn':
+        elif event == 'resultatenBtn':
             self.clear()
             self.app.stackedWidget.setCurrentIndex(3)
         
         # Logout request
-        elif name == 'logoutBtn':
+        elif event == 'logoutBtn':
             status, res = logoutRequest(self.app.token_type, self.app.token)
             
             if status == 'Ok':
