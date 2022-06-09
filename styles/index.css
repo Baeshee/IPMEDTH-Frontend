@@ -11,7 +11,7 @@ QPushButton{
 }
 
 QPushButton:hover{
-    background-color: #f49a3f;
+    background-color: #666666;
 }
 
 #Form{
