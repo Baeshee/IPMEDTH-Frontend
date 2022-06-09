@@ -39,8 +39,8 @@ class App(QMainWindow):
         self.setStyleSheet(open('styles/index.css').read())
     
 # Initialize the application
+QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 app = QApplication(sys.argv)
-app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 AppWindow = App()
 AppWindow.show()
 app.exec()
