@@ -13,7 +13,7 @@ class HomePage(QWidget):
     def initPage(self, app):
         self.app = app
         self.menu = Menu(self.app)
-        self.main = Main()
+        self.main = Main(self.app)
         wList = [self.menu, self.main]
         
         layout = QHBoxLayout(self)

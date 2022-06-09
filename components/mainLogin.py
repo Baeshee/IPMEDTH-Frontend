@@ -11,7 +11,7 @@ class Main(QWidget):
         super(Main, self).__init__()
         uic.loadUi('layout/loginSection.ui', self)
         self.app = app
-        self.showHide.setPixmap(QPixmap('icons/show.png'))
+        self.showHide.setPixmap(QPixmap('icons/ui/show.svg'))
         
         self.connectBtn()
         self.connectClickEvent()
@@ -26,10 +26,10 @@ class Main(QWidget):
         if event == 'showHide':
             if self.passwordField.echoMode() == QLineEdit.EchoMode.Password:
                 self.passwordField.setEchoMode(QLineEdit.EchoMode.Normal)
-                self.showHide.setPixmap(QPixmap('icons/hide.png'))
+                self.showHide.setPixmap(QPixmap('icons/ui/hide.svg'))
             else: 
                 self.passwordField.setEchoMode(QLineEdit.EchoMode.Password)
-                self.showHide.setPixmap(QPixmap('icons/show.png'))
+                self.showHide.setPixmap(QPixmap('icons/ui/show.svg'))
     
         
     def connectBtn(self):    
@@ -37,14 +37,14 @@ class Main(QWidget):
     
         
     def handleLogin(self):
-        status, res = loginRequest(self.emailField.text(), self.passwordField.text())
-        if status == 'Ok':
-            self.app.token = res[0]
-            self.app.token_type = res[1]
-            self.app.user = res[2]
+        # status, res = loginRequest(self.emailField.text(), self.passwordField.text())
+        # if status == 'Ok':
+        #     self.app.token = res[0]
+        #     self.app.token_type = res[1]
+        #     self.app.user = res[2]
             
             self.app.stackedWidget.setCurrentIndex(1)
-            self.emailField.setText(''),
-            self.passwordField.setText('') 
-        else: 
-            print(res)
+        #     self.emailField.setText(''),
+        #     self.passwordField.setText('') 
+        # else: 
+        #     print(res)

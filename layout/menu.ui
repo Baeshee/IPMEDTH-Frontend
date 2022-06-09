@@ -73,6 +73,9 @@
           <pointsize>16</pointsize>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>Home</string>
         </property>
@@ -91,6 +94,9 @@
           <family>Calibri</family>
           <pointsize>16</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>Meting</string>
@@ -114,6 +120,9 @@
           <family>Calibri</family>
           <pointsize>16</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>Resultaten</string>
@@ -140,6 +149,9 @@
           <family>Calibri</family>
           <pointsize>16</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>Logout</string>
