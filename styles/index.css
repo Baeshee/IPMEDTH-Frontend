@@ -74,3 +74,11 @@ QPushButton:hover{
 .QLineEdit:focus, .QDateEdit:focus{
     border: 2px solid #00aaa6;
 }
+
+QTableWidget {
+    text-align: center;
+}
+
+#switchBtn, #continueBtn {
+    padding: 10px;
+}

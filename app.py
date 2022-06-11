@@ -5,6 +5,7 @@ import sys
 from pages.loginPage import LoginPage
 from pages.homePage import HomePage
 from pages.metingPage import MetingPage
+from pages.resultatenPage import ResultatenPage
 
 class App(QMainWindow):
     def __init__(self):
@@ -17,7 +18,7 @@ class App(QMainWindow):
         
         # Parameter storage
         self.token = ''
-        self.token_type = ''
+        self.token_type = '' 
         self.user = ''
     
         
@@ -28,11 +29,13 @@ class App(QMainWindow):
         self.login = LoginPage(self)
         self.home = HomePage(self)
         self.meting = MetingPage(self)
+        self.resultaten = ResultatenPage(self)
         
         # Add to stack
         self.stackedWidget.addWidget(self.login)
         self.stackedWidget.addWidget(self.home)
         self.stackedWidget.addWidget(self.meting)
+        self.stackedWidget.addWidget(self.resultaten)
 
         # Set all widgets
         self.setCentralWidget(self.stackedWidget)

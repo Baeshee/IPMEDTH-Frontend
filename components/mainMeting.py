@@ -40,13 +40,6 @@ class VideoThread(QThread):
             if ret:
                 self.change_pixmap_signal.emit(img)
                 
-            
-            if cv.waitKey(1) & 0xFF == ord('q'):
-                self.stop()
-                
-    def stop(self):
-        self.cap.release()
-                
 class Main(QWidget):
     def __init__(self, app, page):
         super(Main, self).__init__()

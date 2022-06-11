@@ -35,14 +35,15 @@ class Menu(QWidget):
     def handleClickEvent(self, event, name):
         # Menu navigation
         if event == 'homeBtn':
-            self.app.stackedWidget.setCurrentIndex(1)
             self.clear()
+            self.app.stackedWidget.setCurrentIndex(1)
         elif event == 'metingBtn':
+            self.clear()
             self.app.meting.select.getPatients()
-            self.app.meting.stackedWidget.setCurrentIndex(0)
             self.app.stackedWidget.setCurrentIndex(2)
         elif event == 'resultatenBtn':
             self.clear()
+            self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)
         
         # Logout request
@@ -55,3 +56,4 @@ class Menu(QWidget):
     def clear(self):
         self.app.meting.select.patientList.clear()
         self.app.meting.stackedWidget.setCurrentIndex(0)
+        self.app.meting.main.thread.exit()

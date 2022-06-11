@@ -28,5 +28,6 @@ class Main(QWidget):
         if event == 'metingBtnBig':
             self.app.meting.select.getPatients()
             self.app.stackedWidget.setCurrentIndex(2)
-        if event == 'metingBtnBig':
+        if event == 'resultBtnBig':
+            self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)

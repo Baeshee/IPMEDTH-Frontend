@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon
+from PyQt5 import QtCore
 
 from functools import partial
 import os
@@ -17,8 +18,10 @@ class PatientSelect(QWidget):
         self.main = main
         self.patient_ids = {}
         self.connectBtn()
+        self.connectClickEvent()
         
-        self.searchBtn.setIcon(QIcon('icons/ui/search.png'))
+    def connectClickEvent(self):
+        self.patientNameField.textChanged.connect(self.on_search)
 
     def connectBtn(self):
         buttons = [
@@ -28,7 +31,6 @@ class PatientSelect(QWidget):
         
         for btn in buttons:
             btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
-        
         
     def handleBtn(self, name):
         if name == 'continueBtn':
@@ -65,3 +67,16 @@ class PatientSelect(QWidget):
             if val == value:
                 return key
         return None
+    
+    @QtCore.pyqtSlot()
+    def on_search(self):
+        text = self.patientNameField.text()
+        for row in range(self.patientList.count()):
+            item = self.patientList.item(row)
+            if text:
+                item.setHidden(not self.filter(text, item.text()))
+            else:
+                item.setHidden(False)
+    
+    def filter(self, text, keywords):
+        return text.lower() in keywords.lower()
