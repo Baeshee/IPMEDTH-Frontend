@@ -55,5 +55,4 @@ class Menu(QWidget):
                 
     def clear(self):
         self.app.meting.select.patientList.clear()
-        self.app.meting.stackedWidget.setCurrentIndex(0)
-        self.app.meting.main.thread.exit()
+        self.app.meting.main.closeMeting('menu')

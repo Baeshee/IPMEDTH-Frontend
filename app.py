@@ -16,10 +16,14 @@ class App(QMainWindow):
         QtGui.QFontDatabase.addApplicationFont("styles/fonts/Humanist521LightBT.ttf")
         self.initUi()
         
-        # Parameter storage
-        self.token = ''
-        self.token_type = '' 
+        #Parameter storage
+        self.token = '2|xeV8p0lEJQhNIqC5Em9UhTOYr8PntrU3Uvoigj8x'
+        self.token_type = 'Bearer' 
         self.user = ''
+        
+        # self.token = ''
+        # self.token_type = '' 
+        # self.user = ''
     
         
     def initUi(self):

@@ -12,7 +12,7 @@ QPushButton{
 }
 
 QPushButton:hover{
-    background-color: #666666;
+    background-color: #f49a3f;
 }
 
 #Form{
@@ -81,4 +81,12 @@ QTableWidget {
 
 #switchBtn, #continueBtn {
     padding: 10px;
+}
+
+#toast {
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
 }

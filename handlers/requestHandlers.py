@@ -108,7 +108,7 @@ def makePatientRequest(token_type, token, name, email, date):
         res = r.json()
         
         if r.status_code == 200:
-            return 'Ok', res['data']['id']
+            return 'Ok', res
         else:
             return 'Failed', res['message']
     except requests.exceptions.HTTPError as e:

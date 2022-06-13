@@ -15,6 +15,7 @@ class Main(QWidget):
         
         self.connectBtn()
         self.connectClickEvent()
+        self.toast.setHidden(True)
         
         
     def connectClickEvent(self):
@@ -47,4 +48,6 @@ class Main(QWidget):
         #     self.emailField.setText(''),
         #     self.passwordField.setText('') 
         # else: 
-        #     print(res)
+        #     self.toast.setText(res)
+        #     self.toast.setStyleSheet("background-color: #bd1321;")
+        #     self.toast.setHidden(False)
