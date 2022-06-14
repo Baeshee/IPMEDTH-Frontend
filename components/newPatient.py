@@ -5,6 +5,7 @@ from PyQt5 import uic
 from functools import partial
 import os
 import shutil
+import asyncio
 
 from handlers.requestHandlers import makePatientRequest
 
@@ -32,7 +33,7 @@ class NewPatient(QWidget):
     def handleBtn(self, name):
         if name == 'continueBtn':
             if self.patientNameField.text() != '' and self.emailField.text() != '' and self.dateField.date().toPyDate() != '':
-                status, res = makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate())
+                status, res = asyncio.run(makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate()))
                 if status == 'Ok':
                     self.page.patient_id = res['data']['id']
                     self.main.patientName.setText(self.patientNameField.text())

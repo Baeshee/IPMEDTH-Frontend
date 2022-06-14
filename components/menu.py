@@ -48,7 +48,7 @@ class Menu(QWidget):
         
         # Logout request
         elif event == 'logoutBtn':
-            status, res = logoutRequest(self.app.token_type, self.app.token)
+            status, res = asyncio.run(logoutRequest(self.app.token_type, self.app.token))
             
             if status == 'Ok':
                 self.app.stackedWidget.setCurrentIndex(0)

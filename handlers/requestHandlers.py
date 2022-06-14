@@ -1,45 +1,44 @@
 import requests
 from datetime import date
 import json
-from PIL import Image
 
-def loginRequest(email, password):
+import aiohttp
+
+async def loginRequest(email, password):
     url = "https://www.ipmedth.nl/api/auth/login"
     payload = {
         'email': email,
         'password': password
         }
-    try:
-        r = requests.post(url, data=payload)
-        res = r.json()
-        
-        if r.status_code == 200:
-            token = res['data']['token']
-            token_type = res['data']['token_type']
-            user = res['data']['name']
-            return 'Ok', [token, token_type, user]
-        else:
-            return 'Failed', res['message']
-    except requests.exceptions.HTTPError as e:
-        print(e)
+
+    async with aiohttp.ClientSession() as request:
+        async with request.post(url, data=payload) as r:
+            if r.status == 200:
+                res = await r.json()
+                token = res['data']['token']
+                token_type = res['data']['token_type']
+                user = res['data']['name']
+                return 'Ok', [token, token_type, user]
+            else:
+                res = r.json()
+                return 'Failed', res['message']
         
 
-def logoutRequest(token_type, token):
+async def logoutRequest(token_type, token):
     headers = {'Authorization': f'{token_type} {token}'}
     url = "https://www.ipmedth.nl/api/auth/logout"
-    try:
-        r = requests.post(url, headers=headers)
-        res = r.json()
-        
-        if r.status_code == 200:
-            return 'Ok', res['message']
-        else:
-            return 'Failed', res['message']
-    except requests.exceptions.HTTPError as e:
-        print(e)
+
+    async with aiohttp.ClientSession() as request:
+        async with request.post(url, headers=headers) as r:
+            if r.status == 200:
+                res = await r.json()
+                return 'Ok', res['message']
+            else:
+                res = await r.json()
+                return 'Failed', res['message']
 
 
-def sessionRequest(token_type, token, patient):
+async def sessionRequest(token_type, token, patient):
     headers = {'Authorization': f'{token_type} {token}'}
     url = "https://www.ipmedth.nl/api/sessions"
     
@@ -47,19 +46,17 @@ def sessionRequest(token_type, token, patient):
         "patient_id": patient,
         "date": date.today().strftime("%d-%m-%Y"),
     }
-    try:
-        r = requests.post(url, headers=headers, data=body)
-        res = r.json()
-        
-        if r.status_code == 200:
-            return 'Ok', res['data']['id']
-        else:
-            return 'Failed', res['message']
-    except requests.exceptions.HTTPError as e:
-        print(e)
+    async with aiohttp.ClientSession() as request:
+        async with request.post(url, headers=headers, data=body) as r:
+            if r.status == 200:
+                res = await r.json()
+                return 'Ok', res['data']['id']
+            else:
+                res = await r.json()
+                return 'Failed', res['message']
 
         
-def uploadRequest(token_type, token, s_id, handData, imagePath):
+async def uploadRequest(token_type, token, s_id, handData, imagePath):
     headers = {'Authorization': f'{token_type} {token}'}
     url = "https://www.ipmedth.nl/api/measurements"
     image = open(imagePath, 'rb')
@@ -81,20 +78,18 @@ def uploadRequest(token_type, token, s_id, handData, imagePath):
         'image': image,
         'Content-Type': 'image/png',
     }
-    try:
-        r = requests.post(url, headers=headers, data=body, files=files)
+    
+    r = requests.post(url, headers=headers, data=body, files=files)
+    if r.status_code == 200:
         image.close()
         res = r.json()
-        
-        if r.status_code == 200:
-            return 'Ok', res['message']
-        else:
-            return 'Failed', res['message']
-    except requests.exceptions.HTTPError as e:
-        print(e)
+        return 'Ok', res['message']
+    else:
+        res = r.json()
+        return 'Failed', res['message']
 
 
-def makePatientRequest(token_type, token, name, email, date):
+async def makePatientRequest(token_type, token, name, email, date):
     headers = {'Authorization': f'{token_type} {token}'}
     url = "https://www.ipmedth.nl/api/patients"
     
@@ -103,29 +98,35 @@ def makePatientRequest(token_type, token, name, email, date):
         "email": email,
         "date_of_birth": date
     }
-    try:
-        r = requests.post(url, headers=headers, data=body)
-        res = r.json()
-        
-        if r.status_code == 200:
-            return 'Ok', res
-        else:
-            return 'Failed', res['message']
-    except requests.exceptions.HTTPError as e:
-        print(e)
+    async with aiohttp.ClientSession() as request:
+        async with request.post(url, headers=headers, data=body) as r:
+            if r.status == 200:
+                res = await r.json()
+                return 'Ok', res
+            else:
+                res = r.json()
+                return 'Failed', res['message']
 
         
-def getPatientRequest(token_type, token):
+async def getPatientRequest(token_type, token):
     headers = {'Authorization': f'{token_type} {token}'}
     url = "https://www.ipmedth.nl/api/patients"
     
-    try:
-        r = requests.get(url, headers=headers)
-        res = r.json()
+    async with aiohttp.ClientSession() as request:
+        async with request.get(url, headers=headers) as r:
+            if r.status == 200:
+                res = await r.json()
+                return 'Ok', res['data']
+            else:
+                res = await r.json()
+                return 'Failed', res['message']
         
-        if r.status_code == 200:
-            return 'Ok', res['data']
-        else:
-            return 'Failed', res['message']
-    except requests.exceptions.HTTPError as e:
-        print(e)
+async def getImageRequest(token_type, token, image):
+    headers = {'Authorization': f'{token_type} {token}'}
+    url = f"https://www.ipmedth.nl/images/measurements/{image}"
+    
+    async with aiohttp.ClientSession() as request:
+        async with request.get(url, headers=headers) as r:
+            if r.status == 200:
+                res = await r.read()
+                return 'Ok', res

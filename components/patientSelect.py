@@ -6,6 +6,7 @@ from PyQt5 import QtCore
 from functools import partial
 import os
 import shutil
+import asyncio
 
 from handlers.requestHandlers import getPatientRequest
 
@@ -54,7 +55,7 @@ class PatientSelect(QWidget):
     
             
     def getPatients(self):
-        status, res = getPatientRequest(self.app.token_type, self.app.token)
+        status, res = asyncio.run(getPatientRequest(self.app.token_type, self.app.token))
         if status == 'Ok':
             for patient in res:
                 self.patientList.addItem(patient['name'])

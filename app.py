@@ -17,7 +17,7 @@ class App(QMainWindow):
         self.initUi()
         
         #Parameter storage
-        self.token = '2|xeV8p0lEJQhNIqC5Em9UhTOYr8PntrU3Uvoigj8x'
+        self.token = '1|xF9WauU8EJrXsoRGqfGOlj2Wtgw7zdcBXMm2PkfI'
         self.token_type = 'Bearer' 
         self.user = ''
         

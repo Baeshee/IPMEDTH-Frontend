@@ -14,10 +14,11 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 import pandas as pd
+import asyncio
 
 from handlers.requestHandlers import uploadRequest, sessionRequest
 from handlers.hand_detect_module import handDetect
-from handlers.modelHandler import PandasModel
+from handlers.createPlot import createPlot
 
 class VideoThread(QThread):
     change_pixmap_signal = pyqtSignal(np.ndarray)
@@ -97,7 +98,7 @@ class Main(QWidget):
         if "handData" not in globals():
             self.timer("Meting mislukt!")
             return
-        if len(handData) != 0:
+        if len(handData) != 0 and handData['hand_score'] > 0.8:
             data = handData
             self.timer("Meting geslaagd!")
             self.tabWidget.setTabEnabled(1,True)
@@ -129,19 +130,16 @@ class Main(QWidget):
             
         
     def upload(self):
-        status, s_id = sessionRequest(self.app.token_type, self.app.token, self.page.patient_id)
-        if status == 'Ok':
-            for key in self.resultaten.keys():
-                status, res = uploadRequest(self.app.token_type, self.app.token, s_id, self.resultaten[key], self.imageNames[key])
-                if status == 'Failed':
-                    self.timer(res)
-                    return
-            self.closeMeting('upload')
-        else:
-            self.timer("Upload is mislukt!")
+        asyncio.run(handleRequests(self.app, self.app.token_type, self.app.token, self.page.patient_id, self.resultaten, self.imageNames, self))
+        self.closeMeting('upload')
         
         
     def timer(self, text):
+        timer = QTimer(self)
+        
+        if timer.isActive():
+            timer.stop()
+        
         if "geslaagd" in text or "created" in text:
             self.toast.setStyleSheet("background-color: #2abd13;")   
         else:
@@ -150,7 +148,6 @@ class Main(QWidget):
         self.toast.setText(text)
         self.toast.setHidden(False)
         
-        timer = QTimer(self)
         timer.timeout.connect(self.setToHidden)
         timer.start(5000)
         
@@ -172,8 +169,7 @@ class Main(QWidget):
             
         if text == 'upload':
             self.page.stackedWidget.setCurrentIndex(0)
-            self.app.stackedWidget.setCurrentIndex(1)
-            shutil.rmtree("temp")   
+            self.app.stackedWidget.setCurrentIndex(1)  
             
         if text == 'menu':
             self.setHidden()
@@ -189,46 +185,8 @@ class Main(QWidget):
         img.save(path, format="PNG")
         self.imageNames[name] = path
         
-        colors = ["#ffe5b4", "#804080", "#ffcc00", "#30ff30", "#1565c0", '#ff3030']
-        finger_thumb = pd.DataFrame(data['landmarks']['finger_thumb'])
-        finger_index = pd.DataFrame(data['landmarks']['finger_index'])
-        finger_middle = pd.DataFrame(data['landmarks']['finger_middle'])
-        finger_ring = pd.DataFrame(data['landmarks']['finger_ring'])
-        finger_pink = pd.DataFrame(data['landmarks']['finger_pink'])
-        wrist = pd.DataFrame(data['landmarks']['wrist'])
-
-        df = pd.concat([finger_thumb, finger_index, finger_middle, finger_ring, finger_pink, wrist], axis=1)
-        model = PandasModel(df)
+        fig, model = createPlot(data['landmarks'])
         
-        # Omklappen zodat de X en Y coordinaten geinterpreteerd worden voor de plot
-        df = df.T
-
-        fig = Figure(figsize=(5, 4), dpi=100)
-        ax = fig.add_subplot(111)
-
-        padding = 50
-        ax.axis([df['x'].min() - padding, df['x'].max() + padding, df['y'].min() - padding, df['y'].max() + padding])
-
-        for k, v in df.iterrows():
-            if "THUMB" in k:
-                ax.scatter(v[0], v[1], color=colors[0])
-            if "INDEX" in k:
-                ax.scatter(v[0], v[1], color=colors[1])
-            if "MIDDLE" in k:
-                ax.scatter(v[0], v[1], color=colors[2])
-            if "RING" in k:
-                ax.scatter(v[0], v[1], color=colors[3])
-            if "PINKY" in k:
-                ax.scatter(v[0], v[1], color=colors[4])
-            if "WRIST" in k:
-                ax.scatter(v[0], v[1], color=colors[5])
-                
-            # ax.annotate(k, v,
-            #             xytext=(-10,-10), 
-            #             textcoords='offset points',
-            #             size=4, 
-            #             color='darkslategrey')
-        ax.invert_yaxis()
         self.canvas = FigureCanvas(fig)
         toolbar = NavigationToolbar(self.canvas, self)
         
@@ -301,3 +259,16 @@ class Main(QWidget):
         bytes_per_line = ch * w
         convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
         return QPixmap.fromImage(convert_to_Qt_format) 
+
+async def handleRequests(app, token_type, token, patient_id, resultaten, imageNames, main):
+    status, s_id = await asyncio.ensure_future(sessionRequest(token_type, token, patient_id))
+    if status == 'Ok':
+        for key in resultaten.keys():
+            status, res = await uploadRequest(token_type, token, s_id, resultaten[key], imageNames[key])
+            if status == 'Failed':
+                main.timer(res)
+                return
+        main.closeMeting('upload')
+        app.home.main.timer(res)
+    else:
+        main.timer("Geen sessie aangemaakt!")

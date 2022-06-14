@@ -1,11 +1,16 @@
 from PyQt5 import QtWidgets, Qt, QtCore
-from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon, QFont, QPixmap
 
 from functools import partial
-from handlers.requestHandlers import getPatientRequest
+import json
+import asyncio
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
+from handlers.requestHandlers import getPatientRequest, getImageRequest
 from components.sessieTable import SessieTable
+from handlers.createPlot import createPlot
 
 class Main(QWidget):
     def __init__(self, app):
@@ -13,6 +18,7 @@ class Main(QWidget):
         uic.loadUi('layout/mainResultaten.ui', self)
         self.app = app
         self.sessieTable = SessieTable()
+        self.setHidden()
         self.patient_data = []
         self.sessiesTabLayout.setContentsMargins(0,0,0,0)
         
@@ -21,8 +27,14 @@ class Main(QWidget):
         self.placeholder.setFont(QFont('Calibri', 24))
         self.patientNameField.textChanged.connect(self.on_search)
         
+    def setHidden(self):
+        self.detailTabWidget.setTabEnabled(1,False)
+        for i in range(4):
+            self.metingenTabWidget.setTabEnabled(i,False)
+        
+        
     def loadData(self):
-        status, res = getPatientRequest(self.app.token_type, self.app.token)
+        status, res = asyncio.run(getPatientRequest(self.app.token_type, self.app.token))
         if status == 'Ok':
             row = 0
             self.patientTable.setRowCount(len(res))
@@ -42,7 +54,7 @@ class Main(QWidget):
     def connectEvents(self):
         self.patientTable.doubleClicked.connect(self.set_sessions)
             
-    def set_sessions(self):
+    def set_sessions(self):        
         if self.sessiesTabLayout.itemAt(0):
             for i in range(self.sessiesTabLayout.count()):
                 self.sessiesTabLayout.itemAt(i).widget().setParent(None)
@@ -58,7 +70,86 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 1, QtWidgets.QTableWidgetItem(str(len(session['measurements']))))
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
+        
+        self.sessieTable.table.clicked.connect(self.set_measurements)
+                        
+    def set_measurements(self):
+        self.setHidden()
+        sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
+        measurements = sessions[self.sessieTable.table.currentRow()]['measurements']
+        
+        for m in range(len(measurements)):
+            first_tab = None
+            m_data = measurements[m]
+            data = {}
+            data['finger_thumb'] = json.loads(m_data['finger_thumb'])
+            data['finger_index'] = json.loads(m_data['finger_index'])
+            data['finger_middle'] = json.loads(m_data['finger_middle'])
+            data['finger_ring'] = json.loads(m_data['finger_ring'])
+            data['finger_pink'] = json.loads(m_data['finger_pink'])
+            data['wrist'] = json.loads(m_data['wrist'])
+            
+            pixmap = QPixmap()
+
+            fig, model = createPlot(data)
+            self.canvas = FigureCanvas(fig)
+            toolbar = NavigationToolbar(self.canvas, self)
+            plot_layout = QVBoxLayout()
+            plot_layout.addWidget(toolbar)
+            plot_layout.addWidget(self.canvas)
+            
+            status, res = asyncio.run(getImageRequest(self.app.token_type, self.app.token, m_data['image']))
+            pixmap.loadFromData(res)
+            
+            if m_data['hand_view'] == 'back_side':
+                if self.rugPlot.itemAt(0):
+                    self.rugPlot.itemAt(0).setParent(None)
+                    
+                self.rugImage.setPixmap(pixmap)
+                self.rugPlot.addLayout(plot_layout)
+                self.rugTable.setModel(model)
                 
+                self.metingenTabWidget.setTabEnabled(3,True)
+                first_tab = 3
+                
+            if m_data['hand_view'] == 'pink_side':
+                if self.pinkPlot.itemAt(0):
+                    self.pinkPlot.itemAt(0).setParent(None)
+                
+                self.pinkImage.setPixmap(pixmap)
+                self.pinkPlot.addLayout(plot_layout)
+                self.pinkTable.setModel(model)
+                
+                self.metingenTabWidget.setTabEnabled(2,True)
+                first_tab = 2
+                
+            if m_data['hand_view'] == 'thumb_side':
+                if self.duimPlot.itemAt(0):
+                    self.duimPlot.itemAt(0).setParent(None)
+                
+                self.duimImage.setPixmap(pixmap) 
+                self.duimPlot.addLayout(plot_layout)
+                self.duimTable.setModel(model)
+                
+                self.metingenTabWidget.setTabEnabled(1,True)
+                first_tab = 1
+                
+            if m_data['hand_view'] == 'finger_side':
+                if self.vingerPlot.itemAt(0):
+                    self.vingerPlot.itemAt(0).setParent(None)
+                    
+                
+                self.vingerImage.setPixmap(pixmap)
+                self.vingerPlot.addLayout(plot_layout)
+                self.vingerTable.setModel(model)
+                
+                self.metingenTabWidget.setTabEnabled(0,True)
+                first_tab = 0
+                
+        self.detailTabWidget.setCurrentIndex(1)
+        self.metingenTabWidget.setCurrentIndex(first_tab)
+        self.detailTabWidget.setTabEnabled(1,True)
+            
     @QtCore.pyqtSlot()
     def on_search(self):
         text = self.patientNameField.text()
