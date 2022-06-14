@@ -39,16 +39,16 @@ class Main(QWidget):
     
         
     def handleLogin(self):
-        # status, res = asyncio.run(loginRequest(self.emailField.text(), self.passwordField.text()))
-        # if status == 'Ok':
-        #     self.app.token = res[0]
-        #     self.app.token_type = res[1]
-        #     self.app.user = res[2]
+        status, res = asyncio.run(loginRequest(self.emailField.text(), self.passwordField.text()))
+        if status == 'Ok':
+            self.app.token = res[0]
+            self.app.token_type = res[1]
+            self.app.user = res[2]
             
             self.app.stackedWidget.setCurrentIndex(1)
-        #     self.emailField.setText(''),
-        #     self.passwordField.setText('') 
-        # else: 
-        #     self.toast.setText(res)
-        #     self.toast.setStyleSheet("background-color: #bd1321;")
-        #     self.toast.setHidden(False)
+            self.emailField.setText(''),
+            self.passwordField.setText('') 
+        else: 
+            self.toast.setText(res)
+            self.toast.setStyleSheet("background-color: #bd1321;")
+            self.toast.setHidden(False)
