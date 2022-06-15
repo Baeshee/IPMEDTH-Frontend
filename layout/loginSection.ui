@@ -36,7 +36,7 @@
        <widget class="QFrame" name="horizontalLayout">
         <property name="maximumSize">
          <size>
-          <width>350</width>
+          <width>500</width>
           <height>600</height>
          </size>
         </property>
@@ -241,10 +241,16 @@
                   </item>
                   <item>
                    <widget class="QFrame" name="fieldContainer">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>30</height>
+                     </size>
+                    </property>
                     <property name="maximumSize">
                      <size>
                       <width>400</width>
-                      <height>60</height>
+                      <height>100</height>
                      </size>
                     </property>
                     <property name="frameShape">
@@ -271,15 +277,21 @@
                      </property>
                      <item>
                       <widget class="QLineEdit" name="passwordField">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
                        <property name="minimumSize">
                         <size>
                          <width>0</width>
-                         <height>25</height>
+                         <height>40</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>260</width>
+                         <width>16777215</width>
                          <height>16777215</height>
                         </size>
                        </property>

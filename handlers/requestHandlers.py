@@ -20,7 +20,7 @@ async def loginRequest(email, password):
                 user = res['data']['name']
                 return 'Ok', [token, token_type, user]
             else:
-                res = r.json()
+                res = await r.json()
                 return 'Failed', res['message']
         
 

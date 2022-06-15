@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, Qt, QtCore
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 
@@ -21,6 +21,9 @@ class Main(QWidget):
         self.setHidden()
         self.patient_data = []
         self.sessiesTabLayout.setContentsMargins(0,0,0,0)
+        self.pixmap = QPixmap()
+        self.sessions = []
+        self.measurements = []
         
         self.placeholder = QLabel('Deze patient heeft nog geen sessies')
         self.placeholder.setAlignment(Qt.Qt.AlignCenter)
@@ -71,16 +74,16 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
         
-        self.sessieTable.table.clicked.connect(self.set_measurements)
+        self.sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
+        self.measurements = self.sessions[self.sessieTable.table.currentRow()]['measurements']
+        self.sessieTable.table.doubleClicked.connect(self.set_measurements)
                         
     def set_measurements(self):
         self.setHidden()
-        sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
-        measurements = sessions[self.sessieTable.table.currentRow()]['measurements']
+        first_tab = None
         
-        for m in range(len(measurements)):
-            first_tab = None
-            m_data = measurements[m]
+        for m in range(len(self.measurements)):
+            m_data = self.measurements[m]
             data = {}
             data['finger_thumb'] = json.loads(m_data['finger_thumb'])
             data['finger_index'] = json.loads(m_data['finger_index'])
@@ -88,8 +91,6 @@ class Main(QWidget):
             data['finger_ring'] = json.loads(m_data['finger_ring'])
             data['finger_pink'] = json.loads(m_data['finger_pink'])
             data['wrist'] = json.loads(m_data['wrist'])
-            
-            pixmap = QPixmap()
 
             fig, model = createPlot(data)
             self.canvas = FigureCanvas(fig)
@@ -99,52 +100,57 @@ class Main(QWidget):
             plot_layout.addWidget(self.canvas)
             
             status, res = asyncio.run(getImageRequest(self.app.token_type, self.app.token, m_data['image']))
-            pixmap.loadFromData(res)
+            self.pixmap.loadFromData(res)
             
-            if m_data['hand_view'] == 'back_side':
-                if self.rugPlot.itemAt(0):
-                    self.rugPlot.itemAt(0).setParent(None)
-                    
-                self.rugImage.setPixmap(pixmap)
-                self.rugPlot.addLayout(plot_layout)
-                self.rugTable.setModel(model)
-                
-                self.metingenTabWidget.setTabEnabled(3,True)
-                first_tab = 3
-                
-            if m_data['hand_view'] == 'pink_side':
-                if self.pinkPlot.itemAt(0):
-                    self.pinkPlot.itemAt(0).setParent(None)
-                
-                self.pinkImage.setPixmap(pixmap)
-                self.pinkPlot.addLayout(plot_layout)
-                self.pinkTable.setModel(model)
-                
-                self.metingenTabWidget.setTabEnabled(2,True)
-                first_tab = 2
-                
-            if m_data['hand_view'] == 'thumb_side':
-                if self.duimPlot.itemAt(0):
-                    self.duimPlot.itemAt(0).setParent(None)
-                
-                self.duimImage.setPixmap(pixmap) 
-                self.duimPlot.addLayout(plot_layout)
-                self.duimTable.setModel(model)
-                
-                self.metingenTabWidget.setTabEnabled(1,True)
-                first_tab = 1
-                
             if m_data['hand_view'] == 'finger_side':
                 if self.vingerPlot.itemAt(0):
                     self.vingerPlot.itemAt(0).setParent(None)
                     
-                
-                self.vingerImage.setPixmap(pixmap)
+                self.vingerImage.setPixmap(self.pixmap)
                 self.vingerPlot.addLayout(plot_layout)
                 self.vingerTable.setModel(model)
                 
                 self.metingenTabWidget.setTabEnabled(0,True)
-                first_tab = 0
+                if first_tab == None:
+                    first_tab = 0
+                
+                
+            elif m_data['hand_view'] == 'thumb_side':
+                if self.duimPlot.itemAt(0):
+                    self.duimPlot.itemAt(0).setParent(None)
+                
+                self.duimImage.setPixmap(self.pixmap) 
+                self.duimPlot.addLayout(plot_layout)
+                self.duimTable.setModel(model)
+                
+                self.metingenTabWidget.setTabEnabled(1,True)
+                if first_tab == None:
+                    first_tab = 1
+                
+            elif m_data['hand_view'] == 'pink_side':
+                if self.pinkPlot.itemAt(0):
+                    self.pinkPlot.itemAt(0).setParent(None)
+                
+                self.pinkImage.setPixmap(self.pixmap)
+                self.pinkPlot.addLayout(plot_layout)
+                self.pinkTable.setModel(model)
+                
+                self.metingenTabWidget.setTabEnabled(2,True)
+                if first_tab == None:
+                    first_tab = 2
+                    
+            elif m_data['hand_view'] == 'back_side':
+                if self.rugPlot.itemAt(0):
+                    self.rugPlot.itemAt(0).setParent(None)
+                    
+                self.rugImage.setPixmap(self.pixmap)
+                self.rugPlot.addLayout(plot_layout)
+                self.rugTable.setModel(model)
+                
+                self.metingenTabWidget.setTabEnabled(3,True)
+                if first_tab == None:
+                    first_tab = 3
+                
                 
         self.detailTabWidget.setCurrentIndex(1)
         self.metingenTabWidget.setCurrentIndex(first_tab)

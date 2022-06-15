@@ -28,7 +28,7 @@ QPushButton:hover{
     background-color: #666666;
 }
 
-.QLineEdit{
+.QLineEdit, #passwordFiel{
     border-radius: 5px;
     background-color: white;
     border: 1px solid black;
