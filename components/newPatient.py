@@ -9,27 +9,25 @@ import asyncio
 
 from handlers.requestHandlers import makePatientRequest
 
+
 class NewPatient(QWidget):
     def __init__(self, app, page, main):
         super().__init__()
-        uic.loadUi('layout/newPatient.ui', self)
+        uic.loadUi("layout/newPatient.ui", self)
         self.app = app
         self.page = page
         self.main = main
         self.connectBtn()
         self.toast.setHidden(True)
-        
+
         self.dateField.setDate(QDate.currentDate())
-        
+
     def connectBtn(self):
-        buttons = [
-            self.continueBtn,
-            self.switchBtn
-        ]
-        
+        buttons = [self.continueBtn, self.switchBtn]
+
         for btn in buttons:
             btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
-        
+
     def handleBtn(self, name):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         if name == 'continueBtn':
@@ -38,26 +36,23 @@ class NewPatient(QWidget):
                 if status == 'Ok':
                     self.page.patient_id = res['data']['id']
                     self.main.patientName.setText(self.patientNameField.text())
-                    self.patientNameField.setText('')
+                    self.patientNameField.setText("")
                     self.main.thread.start()
                     if os.path.isdir("temp"):
                         shutil.rmtree("temp")
                     os.mkdir("temp")
                     self.page.stackedWidget.setCurrentIndex(2)
-                    self.page.main.timer(res['message'])
-                else: 
+                    self.page.main.timer(res["message"])
+                else:
                     self.toast.setText(res)
                     self.toast.setHidden(False)
             else:
                 self.toast.setText("Alle velden moeten ingevuld zijn!")
                 self.toast.setStyleSheet("background-color: #bd1321;")
                 self.toast.setHidden(False)
-            
+
         if name == "switchBtn":
-            self.patientNameField.setText('')
-            self.emailField.setText('')
+            self.patientNameField.setText("")
+            self.emailField.setText("")
             self.dateField.setDate(QDate.currentDate())
             self.page.stackedWidget.setCurrentIndex(0)
-            
-            
-            
