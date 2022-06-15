@@ -1,40 +1,40 @@
-import shutil
+"""Main measurement component."""
+
+import asyncio
 from functools import partial
 
-import cv2 as cv
+import cv2
 import matplotlib
 import numpy as np
-from PIL import Image
-from PyQt5 import Qt, uic
-from PyQt5.QtCore import QThread, QTimer, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QFont, QImage, QPixmap
-from PyQt5.QtWidgets import QVBoxLayout, QWidget
-
-matplotlib.use("Qt5Agg")
-import asyncio
-
-import pandas as pd
-from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
+from PIL import Image
+from PyQt5 import uic
+from PyQt5.QtCore import QThread, QTimer, pyqtSignal, pyqtSlot
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import QVBoxLayout, QWidget
 
 from handlers.createPlot import createPlot
 from handlers.hand_detect_module import handDetect
 from handlers.request_handlers import session_request, upload_request
 
+matplotlib.use("Qt5Agg")
+
 
 class VideoThread(QThread):
+    """VideoThread class."""
+
     change_pixmap_signal = pyqtSignal(np.ndarray)
 
     def __init__(self):
-        super(VideoThread, self).__init__()
+        super().__init__()
         self.detector = handDetect(detectCon=0.8, maxHands=2)
         self.stop = False
         self.cap = None
 
     def run(self):
-        self.cap = cv.VideoCapture(0)
+        """Run video thread."""
+        self.cap = cv2.VideoCapture(0)
         while True:
             ret, img = self.cap.read()
             hands, img = self.detector.staticImage(img)
@@ -47,10 +47,11 @@ class VideoThread(QThread):
             if ret:
                 self.change_pixmap_signal.emit(img)
 
-            if self.stop == True:
+            if self.stop is True:
                 break
 
-    def releaseCap(self):
+    def release_cap(self):
+        """Release video capture."""
         if self.cap is not None:
             self.stop = True
             self.cap.release()
@@ -60,28 +61,32 @@ class VideoThread(QThread):
 
 
 class Main(QWidget):
+    """Menu QWidget class."""
+
     def __init__(self, app, page):
-        super(Main, self).__init__()
+        super().__init__()
         uic.loadUi("layout/metingComponent.ui", self)
         self.app = app
         self.page = page
-        self.connectBtn()
+        self.connect_btn()
         self.stream_label = self.videoLabel
-        self.setHidden()
+        self.set_hidden()
 
-        self.resultaten = {}
-        self.imageNames = {}
+        self.results = {}
+        self.image_names = {}
 
         self.thread = VideoThread()
         self.thread.change_pixmap_signal.connect(self.update_stream)
 
-    def setHidden(self):
+    def set_hidden(self):
+        """Set all tabs to hidden."""
         self.toast.setHidden(True)
         self.tabWidget.setTabEnabled(1, False)
         for i in range(4):
             self.nestedTabWidget.setTabEnabled(i, False)
 
-    def connectBtn(self):
+    def connect_btn(self):
+        """Connect buttons to functions."""
         buttons = [
             self.duimView,
             self.pinkView,
@@ -90,16 +95,18 @@ class Main(QWidget):
         ]
 
         for btn in buttons:
-            btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
+            btn.clicked.connect(partial(self.handle_btn, btn.objectName()))
 
         # Isolated calls
         self.backBtn.clicked.connect(self.back)
         self.uploadBtn.clicked.connect(self.upload)
 
     def back(self):
-        self.closeMeting("back")
+        """Close stream and go back."""
+        self.close_measurement("back")
 
-    def handleBtn(self, name):
+    def handle_btn(self, name):
+        """Handle button clicks."""
         sender = self.sender()
         if "handData" not in globals():
             self.timer("Meting mislukt!")
@@ -111,44 +118,46 @@ class Main(QWidget):
         else:
             self.timer("Meting mislukt!")
             return
-        img = Image.fromarray(cv.cvtColor(handImg, cv.COLOR_BGR2RGB))
+        img = Image.fromarray(cv2.cvtColor(handImg, cv2.COLOR_BGR2RGB))
 
         if name == "duimView":
             data["hand_view"] = "thumb_side"
-            self.handleData(name, data, img)
+            self.handle_data(name, data, img)
             self.nestedTabWidget.setTabEnabled(1, True)
 
         if name == "pinkView":
             data["hand_view"] = "pink_side"
-            self.handleData(name, data, img)
+            self.handle_data(name, data, img)
             self.nestedTabWidget.setTabEnabled(2, True)
 
         if name == "vingerView":
             data["hand_view"] = "finger_side"
-            self.handleData(name, data, img)
+            self.handle_data(name, data, img)
             self.nestedTabWidget.setTabEnabled(0, True)
 
         if name == "rugView":
             data["hand_view"] = "back_side"
-            self.handleData(name, data, img)
+            self.handle_data(name, data, img)
             self.nestedTabWidget.setTabEnabled(3, True)
 
     def upload(self):
+        """Upload data to API."""
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(
-            handleRequests(
+            handle_requests(
                 self.app,
                 self.app.token_type,
                 self.app.token,
                 self.page.patient_id,
-                self.resultaten,
-                self.imageNames,
+                self.results,
+                self.image_names,
                 self,
             )
         )
-        self.closeMeting("upload")
+        self.close_measurement("upload")
 
     def timer(self, text):
+        """Show toast message and set timer."""
         timer = QTimer(self)
 
         if timer.isActive():
@@ -162,22 +171,25 @@ class Main(QWidget):
         self.toast.setText(text)
         self.toast.setHidden(False)
 
-        timer.timeout.connect(self.setToHidden)
+        timer.timeout.connect(self.set_to_hidden)
         timer.start(5000)
 
-    def setToHidden(self):
+    def set_to_hidden(self):
+        """Set toast to hidden."""
         self.toast.setHidden(True)
 
-    def closeStream(self):
+    def close_stream(self):
+        """Close stream thread."""
         self.thread.exit()
 
-    def closeMeting(self, text):
+    def close_measurement(self, text):
+        """Close measurement and go back."""
         self.page.patient_id = ""
-        self.resultaten = {}
-        self.imageNames = {}
+        self.results = {}
+        self.image_names = {}
 
         if text == "back":
-            self.setHidden()
+            self.set_hidden()
             self.app.measurement.select.get_patients()
             self.page.stacked_widget.setCurrentIndex(0)
 
@@ -186,18 +198,19 @@ class Main(QWidget):
             self.app.stacked_widget.setCurrentIndex(1)
 
         if text == "menu":
-            self.setHidden()
+            self.set_hidden()
             self.page.stacked_widget.setCurrentIndex(0)
 
-        self.closeStream()
-        self.thread.releaseCap()
+        self.close_stream()
+        self.thread.release_cap()
 
-    def handleData(self, name, data, img):
-        self.resultaten[name] = data
+    def handle_data(self, name, data, img):
+        """Handle data."""
+        self.results[name] = data
         path = f"temp/{name}.png"
 
         img.save(path, format="PNG")
-        self.imageNames[name] = path
+        self.image_names[name] = path
 
         fig, model = createPlot(data["landmarks"])
 
@@ -261,36 +274,36 @@ class Main(QWidget):
     def update_stream(self, img):
         """Updates the image_label with a new opencv image"""
 
-        qt_img = self.convert_cv_qt(img)
-        if qt_img:
+        if qt_img := self.convert_cv_qt(img):
             self.stream_label.setPixmap(qt_img)
 
     def convert_cv_qt(self, img):
         """Convert from an opencv image to QPixmap"""
-        rgb_image = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+        rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb_image.shape
         bytes_per_line = ch * w
-        convert_to_Qt_format = QImage(
+        convert_to_qt_format = QImage(
             rgb_image.data, w, h, bytes_per_line, QImage.Format.Format_RGB888
         )
-        return QPixmap.fromImage(convert_to_Qt_format)
+        return QPixmap.fromImage(convert_to_qt_format)
 
 
-async def handleRequests(
-    app, token_type, token, patient_id, resultaten, imageNames, main
+async def handle_requests(
+    app, token_type, token, patient_id, results, image_names, main
 ):
+    """Handle requests."""
     status, session_id = await asyncio.ensure_future(
         session_request(token_type, token, patient_id)
     )
     if status == "Ok":
-        for key in resultaten.keys():
+        for key in results.keys():
             status, res = await upload_request(
-                token_type, token, session_id, resultaten[key], imageNames[key]
+                token_type, token, session_id, results[key], image_names[key]
             )
             if status == "Failed":
                 main.timer(res)
                 return
-        main.closeMeting("upload")
+        main.close_measurement("upload")
         app.home.main.timer(res)
     else:
         main.timer("Geen sessie aangemaakt!")

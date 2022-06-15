@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QHBoxLayout, QStackedWidget, QWidget
 
-from components.mainMeting import Main
+from components.main_measurement import Main
 from components.menu import Menu
 from components.new_patient import NewPatient
 from components.select_patient import PatientSelect

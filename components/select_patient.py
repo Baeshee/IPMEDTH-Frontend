@@ -50,14 +50,14 @@ class PatientSelect(QWidget):
                         shutil.rmtree("temp")
                     os.mkdir("temp")
                     self.main.thread.start()
-                    self.page.stackedWidget.setCurrentIndex(2)
+                    self.page.stacked_widget.setCurrentIndex(2)
             else:
                 self.toast.setStyleSheet("background-color: #bd1321;")
                 self.toast.setText("Geen patient geselecteerd!")
                 self.toast.setHidden(False)
 
         if name == "switchBtn":
-            self.page.stackedWidget.setCurrentIndex(1)
+            self.page.stacked_widget.setCurrentIndex(1)
             self.patientNameField.setText("")
 
     def get_patients(self):

@@ -42,6 +42,8 @@ disable= [
     "duplicate-code",
     "format",
     "unsubscriptable-object",
+    "too-many-arguments",
+    "no-member",
 ]
 
 [tool.pylint.SIMILARITIES]

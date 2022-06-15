@@ -77,4 +77,4 @@ class Menu(QWidget):
     def clear(self):
         """Clear the patientlist."""
         self.app.measurement.select.patientList.clear()
-        self.app.measurement.main.closeMeting("menu")
+        self.app.measurement.main.close_measurement("menu")
