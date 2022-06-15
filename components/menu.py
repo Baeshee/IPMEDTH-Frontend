@@ -46,6 +46,7 @@ class Menu(QWidget):
         Args:
             event: id of the button
         """
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
         # Menu navigation
         if event == 'homeBtn':

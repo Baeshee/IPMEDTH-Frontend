@@ -136,6 +136,8 @@ class Main(QWidget):
         if 'meting_time' in self.app.timestamps:
             self.app.timestamps['end_second_meting_time'] = (meting_time - self.app.start_time)
         self.app.timestamps['end_first_meting_time'] = (meting_time - self.app.start_time)
+        
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(handleRequests(self.app, self.app.token_type, self.app.token, self.page.patient_id, self.resultaten, self.imageNames, self))
         self.closeMeting('upload')
         

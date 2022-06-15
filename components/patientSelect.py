@@ -62,6 +62,7 @@ class PatientSelect(QWidget):
     
             
     def getPatients(self):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(getPatientRequest(self.app.token_type, self.app.token))
         if status == 'Ok':
             for patient in res:

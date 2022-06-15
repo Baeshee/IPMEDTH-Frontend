@@ -37,6 +37,7 @@ class Main(QWidget):
         
         
     def loadData(self):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(getPatientRequest(self.app.token_type, self.app.token))
         if status == 'Ok':
             row = 0
@@ -80,6 +81,7 @@ class Main(QWidget):
     def set_measurements(self):
         sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
         measurements = sessions[self.sessieTable.table.currentRow()]['measurements']
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         self.setHidden()
         first_tab = None
         
