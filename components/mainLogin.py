@@ -39,6 +39,7 @@ class Main(QWidget):
     
         
     def handleLogin(self):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(loginRequest(self.emailField.text(), self.passwordField.text()))
         if status == 'Ok':
             self.app.token = res[0]

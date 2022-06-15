@@ -130,6 +130,7 @@ class Main(QWidget):
             
         
     def upload(self):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(handleRequests(self.app, self.app.token_type, self.app.token, self.page.patient_id, self.resultaten, self.imageNames, self))
         self.closeMeting('upload')
         

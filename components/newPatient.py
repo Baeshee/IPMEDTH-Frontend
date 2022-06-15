@@ -31,6 +31,7 @@ class NewPatient(QWidget):
             btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
         
     def handleBtn(self, name):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         if name == 'continueBtn':
             if self.patientNameField.text() != '' and self.emailField.text() != '' and self.dateField.date().toPyDate() != '':
                 status, res = asyncio.run(makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate()))
