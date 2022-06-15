@@ -30,11 +30,23 @@ class NewPatient(QWidget):
 
     def handleBtn(self, name):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        if name == 'continueBtn':
-            if self.patientNameField.text() != '' and self.emailField.text() != '' and self.dateField.date().toPyDate() != '':
-                status, res = asyncio.run(makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate()))
-                if status == 'Ok':
-                    self.page.patient_id = res['data']['id']
+        if name == "continueBtn":
+            if (
+                self.patientNameField.text() != ""
+                and self.emailField.text() != ""
+                and self.dateField.date().toPyDate() != ""
+            ):
+                status, res = asyncio.run(
+                    makePatientRequest(
+                        self.app.token_type,
+                        self.app.token,
+                        self.patientNameField.text(),
+                        self.emailField.text(),
+                        self.dateField.date().toPyDate(),
+                    )
+                )
+                if status == "Ok":
+                    self.page.patient_id = res["data"]["id"]
                     self.main.patientName.setText(self.patientNameField.text())
                     self.patientNameField.setText("")
                     self.main.thread.start()
