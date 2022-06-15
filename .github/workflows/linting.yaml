@@ -21,8 +21,8 @@ jobs:
             name: Check End of Files
           # - id: flake8
           #   name: Enforcing style guide with flake8
-          # - id: isort
-          #   name: Check imports are sorted
+          - id: isort
+            name: Check imports are sorted
           # - id: pylint
           #   name: Check with pylint
           # - id: trailing-whitespace

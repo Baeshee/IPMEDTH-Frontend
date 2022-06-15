@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QTimer
-from PyQt5 import uic
-from PyQt5.QtGui import QPixmap
-
 from functools import partial
+
+from PyQt5 import uic
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QWidget
 
 
 class Main(QWidget):

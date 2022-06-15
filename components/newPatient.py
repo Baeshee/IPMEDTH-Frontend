@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QDate
-from PyQt5 import uic
-
-from functools import partial
+import asyncio
 import os
 import shutil
-import asyncio
+from functools import partial
+
+from PyQt5 import uic
+from PyQt5.QtCore import QDate
+from PyQt5.QtWidgets import QWidget
 
 from handlers.requestHandlers import makePatientRequest
 

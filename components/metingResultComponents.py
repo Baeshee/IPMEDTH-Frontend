@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
+from PyQt5.QtWidgets import QWidget
 
 
 class VingerComponent(QWidget):

@@ -1,9 +1,10 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget
-from PyQt5 import uic, QtGui, QtCore
 import sys
 
-from pages.loginPage import LoginPage
+from PyQt5 import QtCore, QtGui, uic
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget
+
 from pages.homePage import HomePage
+from pages.loginPage import LoginPage
 from pages.metingPage import MetingPage
 from pages.resultatenPage import ResultatenPage
 

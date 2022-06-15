@@ -29,11 +29,11 @@ repos:
       #   types: [python]
       #   entry: flake8
       #   require_serial: true
-      # - id: isort
-      #   name: 🔀 Sort all imports with isort
-      #   language: system
-      #   types: [python]
-      #   entry: isort
+      - id: isort
+        name: 🔀 Sort all imports with isort
+        language: system
+        types: [python]
+        entry: isort
       # - id: pylint
       #   name: 🌟 Starring code with pylint
       #   language: system

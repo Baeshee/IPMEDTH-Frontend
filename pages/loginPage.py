@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QPushButton, QWidget, QHBoxLayout, QVBoxLayout
 from PyQt5 import uic
+from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
 from components.mainLogin import Main
 

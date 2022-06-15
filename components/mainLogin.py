@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QWidget, QLineEdit
-from PyQt5.QtGui import QPixmap
-from PyQt5 import uic
-
-from functools import partial
 import asyncio
+from functools import partial
+
+from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLineEdit, QWidget
 
 from handlers.requestHandlers import loginRequest
 

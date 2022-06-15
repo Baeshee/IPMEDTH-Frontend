@@ -1,19 +1,16 @@
-from PyQt5 import QtWidgets, Qt, QtCore
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
-from PyQt5 import uic
-from PyQt5.QtGui import QIcon, QFont, QPixmap
-
-from functools import partial
-import json
 import asyncio
+import json
+from functools import partial
 
-from matplotlib.backends.backend_qt5agg import (
-    FigureCanvasQTAgg as FigureCanvas,
-    NavigationToolbar2QT as NavigationToolbar,
-)
-from handlers.requestHandlers import getPatientRequest, getImageRequest
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from PyQt5 import Qt, QtCore, QtWidgets, uic
+from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
+
 from components.sessieTable import SessieTable
 from handlers.createPlot import createPlot
+from handlers.requestHandlers import getImageRequest, getPatientRequest
 
 
 class Main(QWidget):

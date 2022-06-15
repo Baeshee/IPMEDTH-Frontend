@@ -1,8 +1,8 @@
-import requests
-from datetime import date
 import json
+from datetime import date
 
 import aiohttp
+import requests
 
 
 async def loginRequest(email, password):

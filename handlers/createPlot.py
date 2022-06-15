@@ -1,9 +1,9 @@
 import matplotlib
 
 matplotlib.use("Qt5Agg")
+import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
-import pandas as pd
 
 from handlers.modelHandler import PandasModel
 

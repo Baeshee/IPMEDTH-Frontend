@@ -1,15 +1,13 @@
-from PyQt5.QtWidgets import QWidget
+import asyncio
+from functools import partial
+
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-import asyncio
-
-from functools import partial
-import asyncio
-
-from handlers.requestHandlers import logoutRequest
-from handlers.utils import open_url
+from PyQt5.QtWidgets import QWidget
 
 from const import BASE_URL
+from handlers.requestHandlers import logoutRequest
+from handlers.utils import open_url
 
 
 class Menu(QWidget):

@@ -1,28 +1,27 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot, QTimer
-from PyQt5.QtGui import QPixmap, QImage, QFont
-from PyQt5 import uic, Qt
-
-import cv2 as cv
-import numpy as np
 import shutil
 from functools import partial
-from PIL import Image
+
+import cv2 as cv
 import matplotlib
+import numpy as np
+from PIL import Image
+from PyQt5 import Qt, uic
+from PyQt5.QtCore import QThread, QTimer, pyqtSignal, pyqtSlot
+from PyQt5.QtGui import QFont, QImage, QPixmap
+from PyQt5.QtWidgets import QVBoxLayout, QWidget
 
 matplotlib.use("Qt5Agg")
-from matplotlib import pyplot as plt
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt5agg import (
-    FigureCanvasQTAgg as FigureCanvas,
-    NavigationToolbar2QT as NavigationToolbar,
-)
-import pandas as pd
 import asyncio
 
-from handlers.requestHandlers import uploadRequest, sessionRequest
-from handlers.hand_detect_module import handDetect
+import pandas as pd
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+
 from handlers.createPlot import createPlot
+from handlers.hand_detect_module import handDetect
+from handlers.requestHandlers import sessionRequest, uploadRequest
 
 
 class VideoThread(QThread):

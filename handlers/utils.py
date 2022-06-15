@@ -1,4 +1,4 @@
-from PyQt5.Qt import QUrl, QDesktopServices
+from PyQt5.Qt import QDesktopServices, QUrl
 
 
 def open_url(uri):
