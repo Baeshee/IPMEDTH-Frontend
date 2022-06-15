@@ -1,14 +1,13 @@
 import asyncio
 import json
-from functools import partial
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import Qt, QtCore, QtWidgets, uic
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
+from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
 
-from components.sessieTable import SessieTable
+from components.session_table import SessionTable
 from handlers.createPlot import createPlot
 from handlers.request_handlers import get_image_request, get_patient_request
 
@@ -18,7 +17,7 @@ class Main(QWidget):
         super().__init__()
         uic.loadUi("layout/mainResultaten.ui", self)
         self.app = app
-        self.sessieTable = SessieTable()
+        self.session_table = SessionTable()
         self.setHidden()
         self.patient_data = []
         self.sessiesTabLayout.setContentsMargins(0, 0, 0, 0)
@@ -78,32 +77,32 @@ class Main(QWidget):
         if len(self.patient_data[self.patientTable.currentRow()]["sessions"]) == 0:
             self.sessiesTabLayout.addWidget(self.placeholder)
         else:
-            self.sessiesTabLayout.addWidget(self.sessieTable)
+            self.sessiesTabLayout.addWidget(self.session_table)
             row = 0
-            self.sessieTable.table.setRowCount(
+            self.session_table.table.setRowCount(
                 len(self.patient_data[self.patientTable.currentRow()]["sessions"])
             )
             for session in self.patient_data[self.patientTable.currentRow()][
                 "sessions"
             ]:
-                self.sessieTable.table.setItem(
+                self.session_table.table.setItem(
                     row, 0, QtWidgets.QTableWidgetItem(str(session["id"]))
                 )
-                self.sessieTable.table.setItem(
+                self.session_table.table.setItem(
                     row,
                     1,
                     QtWidgets.QTableWidgetItem(str(len(session["measurements"]))),
                 )
-                self.sessieTable.table.setItem(
+                self.session_table.table.setItem(
                     row, 2, QtWidgets.QTableWidgetItem(session["date"])
                 )
                 row = row + 1
 
         self.sessions = self.patient_data[self.patientTable.currentRow()]["sessions"]
-        self.measurements = self.sessions[self.sessieTable.table.currentRow()][
+        self.measurements = self.sessions[self.session_table.table.currentRow()][
             "measurements"
         ]
-        self.sessieTable.table.doubleClicked.connect(self.set_measurements)
+        self.session_table.table.doubleClicked.connect(self.set_measurements)
 
     def set_measurements(self):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
