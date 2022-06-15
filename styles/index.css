@@ -1,4 +1,92 @@
+QWidget{
+    font-family: Calibri;
+}
+
+QPushButton{
+    color: #fff;
+    background-color: #00aaa6;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: #f49a3f;
+}
+
+#Form{
+    background-color: #f6f6f6;
+}
+
 #loginLayout{
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: white;
+}
+
+#loginSection {
+    background-color: #666666;
+}
+
+.QLineEdit, #passwordFiel{
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#menu{
+    background-color: #666666;
+}
+
+#menu QWidget{
+    color: white;
+    border: none;
+    border-radius: 0;
+}
+
+#menu QWidget:hover{
+    background-color: #00aaa6;
+}
+
+/* Custom button styling */
+#resultBtnBig, #metingBtnBig{
+    background-color: #00aaa6;
+    border-radius: 10px;
+}
+
+#resultText, #metingText{
+    background-color: #fff;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+#resultLabel, #metingLabel{
+    font-weight: bold;
+}
+
+#resultBtnBig:hover, #metingBtnBig:hover{
+    background-color: #f49a3f;
+}
+
+.QLineEdit:focus, .QDateEdit:focus{
+    border: 2px solid #00aaa6;
+}
+
+QTableWidget {
+    text-align: center;
+}
+
+#switchBtn, #continueBtn {
+    padding: 10px;
+}
+
+#toast {
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
 }

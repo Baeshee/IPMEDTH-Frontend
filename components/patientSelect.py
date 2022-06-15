@@ -1,9 +1,12 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
+from PyQt5.QtGui import QIcon
+from PyQt5 import QtCore
 
 from functools import partial
 import os
 import shutil
+import asyncio
 
 from handlers.requestHandlers import getPatientRequest
 
@@ -16,6 +19,11 @@ class PatientSelect(QWidget):
         self.main = main
         self.patient_ids = {}
         self.connectBtn()
+        self.connectClickEvent()
+        self.toast.setHidden(True)
+        
+    def connectClickEvent(self):
+        self.patientNameField.textChanged.connect(self.on_search)
 
     def connectBtn(self):
         buttons = [
@@ -26,26 +34,30 @@ class PatientSelect(QWidget):
         for btn in buttons:
             btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
         
-        
     def handleBtn(self, name):
         if name == 'continueBtn':
-            self.page.patient_id = self.get_key_from_patient(self.patientList.currentItem().text())
-            self.main.patientName.setText(self.patientList.currentItem().text())
-            self.patientList.clear()
-            if os.path.isdir("temp"):
-                shutil.rmtree("temp")
-            os.mkdir("temp")
-            self.main.thread.start()
-            self.page.stackedWidget.setCurrentIndex(2)
+            if self.patientList.currentItem():
+                self.page.patient_id = self.get_key_from_patient(self.patientList.currentItem().text())
+                if self.page.patient_id:
+                    self.main.patientName.setText(self.patientList.currentItem().text())
+                    self.patientList.clear()
+                    if os.path.isdir("temp"):
+                        shutil.rmtree("temp")
+                    os.mkdir("temp")
+                    self.main.thread.start()
+                    self.page.stackedWidget.setCurrentIndex(2)
+            else:
+                self.toast.setStyleSheet("background-color: #bd1321;")
+                self.toast.setText("Geen patient geselecteerd!")
+                self.toast.setHidden(False)
 
         if name == "switchBtn":
             self.page.stackedWidget.setCurrentIndex(1)
             self.patientNameField.setText('')
     
-    
             
     def getPatients(self):
-        status, res = getPatientRequest(self.app.token_type, self.app.token)
+        status, res = asyncio.run(getPatientRequest(self.app.token_type, self.app.token))
         if status == 'Ok':
             for patient in res:
                 self.patientList.addItem(patient['name'])
@@ -58,3 +70,16 @@ class PatientSelect(QWidget):
             if val == value:
                 return key
         return None
+    
+    @QtCore.pyqtSlot()
+    def on_search(self):
+        text = self.patientNameField.text()
+        for row in range(self.patientList.count()):
+            item = self.patientList.item(row)
+            if text:
+                item.setHidden(not self.filter(text, item.text()))
+            else:
+                item.setHidden(False)
+    
+    def filter(self, text, keywords):
+        return text.lower() in keywords.lower()

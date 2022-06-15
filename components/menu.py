@@ -1,51 +1,74 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
+import asyncio
 
 from functools import partial
+import asyncio
 
 from handlers.requestHandlers import logoutRequest
+from handlers.utils import open_url
+
+from const import BASE_URL
 
 class Menu(QWidget):
     def __init__(self, app):
         super(Menu, self).__init__()
         uic.loadUi('layout/menu.ui', self)
         self.app = app
-        self.connectBtn()
+        self.connectClickEvent()
+        
+        self.homeIcon.setPixmap(QPixmap('icons/ui/home_white.png'))
+        self.metingIcon.setPixmap(QPixmap('icons/ui/meting_white.png'))
+        self.resultatenIcon.setPixmap(QPixmap('icons/ui/results_white.png'))
+        self.logoutIcon.setPixmap(QPixmap('icons/ui/logout_white.png'))
+        self.profileIcon.setPixmap(QPixmap('icons/ui/account_circle_white.png'))
     
     
-    def connectBtn(self):    
+    def connectClickEvent(self):    
         buttons = [
             # Home
             self.homeBtn,
             self.metingBtn,
             self.resultatenBtn,
             self.logoutBtn,
+            self.profileBtn,
         ]
     
         for btn in buttons:
-            btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
+            btn.mousePressEvent = partial(self.handleClickEvent, btn.objectName())
     
         
-    def handleBtn(self, name):
-        # Menu navigation
-        if name == 'homeBtn':
-            self.app.stackedWidget.setCurrentIndex(1)
-            self.clear()
-        elif name == 'metingBtn':
-            self.app.meting.select.getPatients()
-            self.app.meting.stackedWidget.setCurrentIndex(0)
-            self.app.stackedWidget.setCurrentIndex(2)
-        elif name == 'resultatenBtn':
-            self.clear()
-            self.app.stackedWidget.setCurrentIndex(3)
+    def handleClickEvent(self, event, name):
+        """Handle click event on buttons
         
+        Args:
+            event: id of the button
+        """
+
+        # Menu navigation
+        if event == 'homeBtn':
+            self.clear()
+            self.app.stackedWidget.setCurrentIndex(1)
+        elif event == 'metingBtn':
+            self.clear()
+            self.app.meting.select.getPatients()
+            self.app.stackedWidget.setCurrentIndex(2)
+        elif event == 'resultatenBtn':
+            self.clear()
+            self.app.resultaten.main.loadData()
+            self.app.stackedWidget.setCurrentIndex(3)
+        elif event == 'profileBtn':
+            self.clear()
+            open_url(BASE_URL)
+
         # Logout request
-        elif name == 'logoutBtn':
-            status, res = logoutRequest(self.app.token_type, self.app.token)
+        elif event == 'logoutBtn':
+            status, res = asyncio.run(logoutRequest(self.app.token_type, self.app.token))
             
             if status == 'Ok':
                 self.app.stackedWidget.setCurrentIndex(0)
                 
     def clear(self):
         self.app.meting.select.patientList.clear()
-        self.app.meting.stackedWidget.setCurrentIndex(0)
+        self.app.meting.main.closeMeting('menu')
