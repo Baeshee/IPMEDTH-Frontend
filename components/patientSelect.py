@@ -20,6 +20,7 @@ class PatientSelect(QWidget):
         self.patient_ids = {}
         self.connectBtn()
         self.connectClickEvent()
+        self.toast.setHidden(True)
         
     def connectClickEvent(self):
         self.patientNameField.textChanged.connect(self.on_search)
@@ -46,12 +47,13 @@ class PatientSelect(QWidget):
                     self.main.thread.start()
                     self.page.stackedWidget.setCurrentIndex(2)
             else:
-                print("Geen patient geselecteerd!")
+                self.toast.setStyleSheet("background-color: #bd1321;")
+                self.toast.setText("Geen patient geselecteerd!")
+                self.toast.setHidden(False)
 
         if name == "switchBtn":
             self.page.stackedWidget.setCurrentIndex(1)
             self.patientNameField.setText('')
-    
     
             
     def getPatients(self):
