@@ -17,8 +17,8 @@ jobs:
             name: Check for case conflicts
           - id: check-docstring-first
             name: Check docstring is first
-          # - id: end-of-file-fixer
-          #   name: Check End of Files
+          - id: end-of-file-fixer
+            name: Check End of Files
           # - id: flake8
           #   name: Enforcing style guide with flake8
           # - id: isort

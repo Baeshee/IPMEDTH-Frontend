@@ -17,12 +17,12 @@ repos:
         language: system
         types: [python]
         entry: check-docstring-first
-      # - id: end-of-file-fixer
-      #   name: ⮐  Fix End of Files
-      #   language: system
-      #   types: [text]
-      #   entry: end-of-file-fixer
-      #   stages: [commit, push, manual]
+      - id: end-of-file-fixer
+        name: ⮐  Fix End of Files
+        language: system
+        types: [text]
+        entry: end-of-file-fixer
+        stages: [commit, push, manual]
       # - id: flake8
       #   name: 👔 Enforcing style guide with flake8
       #   language: system
