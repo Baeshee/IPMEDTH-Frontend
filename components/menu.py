@@ -1,10 +1,14 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
+import asyncio
 
 from functools import partial
 
 from handlers.requestHandlers import logoutRequest
+from handlers.utils import open_url
+
+from const import BASE_URL
 
 class Menu(QWidget):
     def __init__(self, app):
@@ -17,6 +21,7 @@ class Menu(QWidget):
         self.metingIcon.setPixmap(QPixmap('icons/ui/meting_white.png'))
         self.resultatenIcon.setPixmap(QPixmap('icons/ui/results_white.png'))
         self.logoutIcon.setPixmap(QPixmap('icons/ui/logout_white.png'))
+        self.profileIcon.setPixmap(QPixmap('icons/ui/account_circle_white.png'))
     
     
     def connectClickEvent(self):    
@@ -26,6 +31,7 @@ class Menu(QWidget):
             self.metingBtn,
             self.resultatenBtn,
             self.logoutBtn,
+            self.profileBtn,
         ]
     
         for btn in buttons:
@@ -33,6 +39,12 @@ class Menu(QWidget):
     
         
     def handleClickEvent(self, event, name):
+        """Handle click event on buttons
+        
+        Args:
+            event: id of the button
+        """
+
         # Menu navigation
         if event == 'homeBtn':
             self.clear()
@@ -45,7 +57,10 @@ class Menu(QWidget):
             self.clear()
             self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)
-        
+        elif event == 'profileBtn':
+            self.clear()
+            open_url(BASE_URL)
+
         # Logout request
         elif event == 'logoutBtn':
             status, res = asyncio.run(logoutRequest(self.app.token_type, self.app.token))
