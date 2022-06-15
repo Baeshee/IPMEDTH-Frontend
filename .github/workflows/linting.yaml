@@ -11,22 +11,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - id: black
-            name: Check code style
+          # - id: black
+          #   name: Check code style
           - id: check-case-conflict
             name: Check for case conflicts
           - id: check-docstring-first
             name: Check docstring is first
-          - id: end-of-file-fixer
-            name: Check End of Files
-          - id: flake8
-            name: Enforcing style guide with flake8
-          - id: isort
-            name: Check imports are sorted
+          # - id: end-of-file-fixer
+          #   name: Check End of Files
+          # - id: flake8
+          #   name: Enforcing style guide with flake8
+          # - id: isort
+          #   name: Check imports are sorted
           # - id: pylint
           #   name: Check with pylint
-          - id: trailing-whitespace
-            name: Trim Trailing Whitespace
+          # - id: trailing-whitespace
+          #   name: Trim Trailing Whitespace
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v3
