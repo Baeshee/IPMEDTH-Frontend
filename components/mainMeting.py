@@ -21,7 +21,7 @@ from matplotlib.figure import Figure
 
 from handlers.createPlot import createPlot
 from handlers.hand_detect_module import handDetect
-from handlers.requestHandlers import sessionRequest, uploadRequest
+from handlers.request_handlers import session_request, upload_request
 
 
 class VideoThread(QThread):
@@ -279,13 +279,13 @@ class Main(QWidget):
 async def handleRequests(
     app, token_type, token, patient_id, resultaten, imageNames, main
 ):
-    status, s_id = await asyncio.ensure_future(
-        sessionRequest(token_type, token, patient_id)
+    status, session_id = await asyncio.ensure_future(
+        session_request(token_type, token, patient_id)
     )
     if status == "Ok":
         for key in resultaten.keys():
-            status, res = await uploadRequest(
-                token_type, token, s_id, resultaten[key], imageNames[key]
+            status, res = await upload_request(
+                token_type, token, session_id, resultaten[key], imageNames[key]
             )
             if status == "Failed":
                 main.timer(res)

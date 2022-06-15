@@ -7,7 +7,7 @@ from PyQt5 import QtCore, uic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
-from handlers.requestHandlers import getPatientRequest
+from handlers.request_handlers import get_patient_request
 
 
 class PatientSelect(QWidget):
@@ -57,7 +57,7 @@ class PatientSelect(QWidget):
     def getPatients(self):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(
-            getPatientRequest(self.app.token_type, self.app.token)
+            get_patient_request(self.app.token_type, self.app.token)
         )
         if status == "Ok":
             for patient in res:

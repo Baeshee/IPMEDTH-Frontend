@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
 
 from components.sessieTable import SessieTable
 from handlers.createPlot import createPlot
-from handlers.requestHandlers import getImageRequest, getPatientRequest
+from handlers.request_handlers import get_image_request, get_patient_request
 
 
 class Main(QWidget):
@@ -39,7 +39,7 @@ class Main(QWidget):
     def loadData(self):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(
-            getPatientRequest(self.app.token_type, self.app.token)
+            get_patient_request(self.app.token_type, self.app.token)
         )
         if status == "Ok":
             row = 0
@@ -128,7 +128,7 @@ class Main(QWidget):
             plot_layout.addWidget(self.canvas)
 
             status, res = asyncio.run(
-                getImageRequest(self.app.token_type, self.app.token, m_data["image"])
+                get_image_request(self.app.token_type, self.app.token, m_data["image"])
             )
             self.pixmap.loadFromData(res)
 
