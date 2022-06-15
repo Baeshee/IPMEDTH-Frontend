@@ -1,7 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
-from components.mainLogin import Main
+from components.main_login import Main
 
 
 class LoginPage(QWidget):

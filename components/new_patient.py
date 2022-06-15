@@ -1,3 +1,5 @@
+"""New patient component."""
+
 import asyncio
 import os
 import shutil
@@ -11,24 +13,28 @@ from handlers.request_handlers import make_patient_request
 
 
 class NewPatient(QWidget):
+    """New pattient QWidget."""
+
     def __init__(self, app, page, main):
         super().__init__()
         uic.loadUi("layout/newPatient.ui", self)
         self.app = app
         self.page = page
         self.main = main
-        self.connectBtn()
+        self.connect_btn()
         self.toast.setHidden(True)
 
         self.dateField.setDate(QDate.currentDate())
 
-    def connectBtn(self):
+    def connect_btn(self):
+        """Connect buttons to there correct function."""
         buttons = [self.continueBtn, self.switchBtn]
 
         for btn in buttons:
-            btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
+            btn.clicked.connect(partial(self.handle_btn, btn.objectName()))
 
-    def handleBtn(self, name):
+    def handle_btn(self, name):
+        """Handle the button events."""
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         if name == "continueBtn":
             if (

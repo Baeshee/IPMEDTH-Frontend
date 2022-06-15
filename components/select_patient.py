@@ -1,16 +1,19 @@
+"""Select patient component."""
+
 import asyncio
 import os
 import shutil
 from functools import partial
 
 from PyQt5 import QtCore, uic
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
 from handlers.request_handlers import get_patient_request
 
 
 class PatientSelect(QWidget):
+    """Patient select QWidget class."""
+
     def __init__(self, app, page, main):
         super().__init__()
         uic.loadUi("layout/patientSelect.ui", self)
@@ -18,20 +21,23 @@ class PatientSelect(QWidget):
         self.page = page
         self.main = main
         self.patient_ids = {}
-        self.connectBtn()
-        self.connectClickEvent()
+        self.connect_btn()
+        self.connect_click_event()
         self.toast.setHidden(True)
 
-    def connectClickEvent(self):
+    def connect_click_event(self):
+        """Connect the click event to the correct function."""
         self.patientNameField.textChanged.connect(self.on_search)
 
-    def connectBtn(self):
+    def connect_btn(self):
+        """Connect the buttons to the correct function."""
         buttons = [self.continueBtn, self.switchBtn]
 
         for btn in buttons:
-            btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
+            btn.clicked.connect(partial(self.handle_btn, btn.objectName()))
 
-    def handleBtn(self, name):
+    def handle_btn(self, name):
+        """Handle the button events."""
         if name == "continueBtn":
             if self.patientList.currentItem():
                 self.page.patient_id = self.get_key_from_patient(
@@ -54,7 +60,8 @@ class PatientSelect(QWidget):
             self.page.stackedWidget.setCurrentIndex(1)
             self.patientNameField.setText("")
 
-    def getPatients(self):
+    def get_patients(self):
+        """Get the patients from the API."""
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(
             get_patient_request(self.app.token_type, self.app.token)
@@ -67,6 +74,7 @@ class PatientSelect(QWidget):
             print(res)
 
     def get_key_from_patient(self, value):
+        """Get the key from the patient."""
         for key, val in self.patient_ids.items():
             if val == value:
                 return key
@@ -74,6 +82,7 @@ class PatientSelect(QWidget):
 
     @QtCore.pyqtSlot()
     def on_search(self):
+        """Search for a patient in QtCore."""
         text = self.patientNameField.text()
         for row in range(self.patientList.count()):
             item = self.patientList.item(row)
@@ -83,4 +92,5 @@ class PatientSelect(QWidget):
                 item.setHidden(False)
 
     def filter(self, text, keywords):
+        """Filter the patient list."""
         return text.lower() in keywords.lower()

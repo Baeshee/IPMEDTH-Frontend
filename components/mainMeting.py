@@ -178,7 +178,7 @@ class Main(QWidget):
 
         if text == "back":
             self.setHidden()
-            self.app.meting.select.getPatients()
+            self.app.meting.select.get_patients()
             self.page.stackedWidget.setCurrentIndex(0)
 
         if text == "upload":

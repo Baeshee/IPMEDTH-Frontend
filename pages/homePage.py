@@ -1,7 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget
 
-from components.mainHome import Main
+from components.main_home import Main
 from components.menu import Menu
 
 

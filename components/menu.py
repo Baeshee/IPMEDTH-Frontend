@@ -1,3 +1,5 @@
+"""Menu component."""
+
 import asyncio
 from functools import partial
 
@@ -11,11 +13,13 @@ from handlers.utils import open_url
 
 
 class Menu(QWidget):
+    """Menu QWidget class."""
+
     def __init__(self, app):
-        super(Menu, self).__init__()
+        super().__init__()
         uic.loadUi("layout/menu.ui", self)
         self.app = app
-        self.connectClickEvent()
+        self.connect_click_event()
 
         self.homeIcon.setPixmap(QPixmap("icons/ui/home_white.png"))
         self.metingIcon.setPixmap(QPixmap("icons/ui/meting_white.png"))
@@ -23,7 +27,8 @@ class Menu(QWidget):
         self.logoutIcon.setPixmap(QPixmap("icons/ui/logout_white.png"))
         self.profileIcon.setPixmap(QPixmap("icons/ui/account_circle_white.png"))
 
-    def connectClickEvent(self):
+    def connect_click_event(self):
+        """Connect the click event to the correct function."""
         buttons = [
             # Home
             self.homeBtn,
@@ -34,9 +39,9 @@ class Menu(QWidget):
         ]
 
         for btn in buttons:
-            btn.mousePressEvent = partial(self.handleClickEvent, btn.objectName())
+            btn.mousePressEvent = partial(self.handle_click_event, btn.objectName())
 
-    def handleClickEvent(self, event, name):
+    def handle_click_event(self, event, name):
         """Handle click event on buttons
 
         Args:
@@ -50,7 +55,7 @@ class Menu(QWidget):
             self.app.stacked_widget.setCurrentIndex(1)
         elif event == "metingBtn":
             self.clear()
-            self.app.meting.select.getPatients()
+            self.app.meting.select.get_patients()
             self.app.stacked_widget.setCurrentIndex(2)
         elif event == "resultatenBtn":
             self.clear()
@@ -70,5 +75,6 @@ class Menu(QWidget):
                 self.app.stacked_widget.setCurrentIndex(0)
 
     def clear(self):
+        """Clear the patientlist."""
         self.app.meting.select.patientList.clear()
         self.app.meting.main.closeMeting("menu")
