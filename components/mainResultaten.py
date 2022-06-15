@@ -12,6 +12,8 @@ from handlers.requestHandlers import getPatientRequest, getImageRequest
 from components.sessieTable import SessieTable
 from handlers.createPlot import createPlot
 
+import time
+
 class Main(QWidget):
     def __init__(self, app):
         super().__init__()
@@ -22,8 +24,6 @@ class Main(QWidget):
         self.patient_data = []
         self.sessiesTabLayout.setContentsMargins(0,0,0,0)
         self.pixmap = QPixmap()
-        self.sessions = []
-        self.measurements = []
         
         self.placeholder = QLabel('Deze patient heeft nog geen sessies')
         self.placeholder.setAlignment(Qt.Qt.AlignCenter)
@@ -74,16 +74,16 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
         
-        self.sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
-        self.measurements = self.sessions[self.sessieTable.table.currentRow()]['measurements']
         self.sessieTable.table.doubleClicked.connect(self.set_measurements)
                         
     def set_measurements(self):
+        sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
+        measurements = sessions[self.sessieTable.table.currentRow()]['measurements']
         self.setHidden()
         first_tab = None
         
-        for m in range(len(self.measurements)):
-            m_data = self.measurements[m]
+        for m in range(len(measurements)):
+            m_data = measurements[m]
             data = {}
             data['finger_thumb'] = json.loads(m_data['finger_thumb'])
             data['finger_index'] = json.loads(m_data['finger_index'])
@@ -155,6 +155,10 @@ class Main(QWidget):
         self.detailTabWidget.setCurrentIndex(1)
         self.metingenTabWidget.setCurrentIndex(first_tab)
         self.detailTabWidget.setTabEnabled(1,True)
+        load_data_time = time.time()
+        if 'load_data_time' in self.app.timestamps:
+            self.app.timestamps['end_second_load_data_time'] = (load_data_time - self.app.start_time)
+        self.app.timestamps['end_first_load_data_time'] = (load_data_time - self.app.start_time)
             
     @QtCore.pyqtSlot()
     def on_search(self):

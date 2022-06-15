@@ -11,10 +11,10 @@ class LoginPage(QWidget):
         
     def initPage(self, app):
         self.app = app
-        self.login = Main(app)
+        self.main = Main(app)
                 
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(self.login)
+        layout.addWidget(self.main)
             
         self.setLayout(layout)

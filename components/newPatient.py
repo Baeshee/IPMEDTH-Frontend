@@ -9,6 +9,8 @@ import asyncio
 
 from handlers.requestHandlers import makePatientRequest
 
+import time
+
 class NewPatient(QWidget):
     def __init__(self, app, page, main):
         super().__init__()
@@ -35,6 +37,9 @@ class NewPatient(QWidget):
             if self.patientNameField.text() != '' and self.emailField.text() != '' and self.dateField.date().toPyDate() != '':
                 status, res = asyncio.run(makePatientRequest(self.app.token_type, self.app.token, self.patientNameField.text(), self.emailField.text(), self.dateField.date().toPyDate()))
                 if status == 'Ok':
+                    new_patient_time = time.time()
+                    self.app.timestamps['end_new_patient_time'] = (new_patient_time - self.app.start_time)
+                    
                     self.page.patient_id = res['data']['id']
                     self.main.patientName.setText(self.patientNameField.text())
                     self.patientNameField.setText('')

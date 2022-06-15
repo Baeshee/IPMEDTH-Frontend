@@ -5,6 +5,8 @@ from PyQt5.QtGui import QPixmap
 
 from functools import partial
 
+import time
+
 class Main(QWidget):
     def __init__(self, app):
         super().__init__()
@@ -28,9 +30,17 @@ class Main(QWidget):
 
     def handleClickEvent(self, event, object):
         if event == 'metingBtnBig':
+            home_btn_time = time.time()
+            if 'home_btn_time' in self.app.timestamps:
+                self.app.timestamps['start_new_patient_time'] = (home_btn_time - self.app.start_time)
+            self.app.timestamps['start_patient_select_time'] = (home_btn_time - self.app.start_time)
+            
             self.app.meting.select.getPatients()
             self.app.stackedWidget.setCurrentIndex(2)
         if event == 'resultBtnBig':
+            resultaten_btn = time.time()
+            self.app.timestamps['resultaten_btn_time'] = (resultaten_btn - self.app.start_time)
+            
             self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)
             

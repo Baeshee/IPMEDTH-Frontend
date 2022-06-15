@@ -1,6 +1,11 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget
 from PyQt5 import uic, QtGui, QtCore
 import sys
+import os
+import shutil
+import json
+import time
+import datetime
 
 from pages.loginPage import LoginPage
 from pages.homePage import HomePage
@@ -20,7 +25,22 @@ class App(QMainWindow):
         self.token = ''
         self.token_type = '' 
         self.user = ''
-    
+        
+        self.timestamps = {}
+        self.timestamps['begin_moment'] = str(datetime.datetime.now())
+        self.start_time = time.time()
+        self.timestamps['start'] = (self.start_time - self.start_time)
+        
+    def closeEvent(self, event):
+        self.timestamps['end'] = (time.time() - self.start_time)
+        if os.path.isdir("temp"):
+            shutil.rmtree("temp")
+            
+        print(self.timestamps)
+            
+        f = open("test_timestamps.json", "w")
+        json.dump(self.timestamps, f)
+        f.close()
         
     def initUi(self):
         self.stackedWidget = QStackedWidget()

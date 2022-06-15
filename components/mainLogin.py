@@ -7,6 +7,8 @@ import asyncio
 
 from handlers.requestHandlers import loginRequest
 
+import time
+
 class Main(QWidget):
     def __init__(self, app):
         super(Main, self).__init__()
@@ -41,6 +43,8 @@ class Main(QWidget):
     def handleLogin(self):
         status, res = asyncio.run(loginRequest(self.emailField.text(), self.passwordField.text()))
         if status == 'Ok':
+            login_time = time.time()
+            self.app.timestamps['login_complete_time'] = (login_time - self.app.start_time)
             self.app.token = res[0]
             self.app.token_type = res[1]
             self.app.user = res[2]

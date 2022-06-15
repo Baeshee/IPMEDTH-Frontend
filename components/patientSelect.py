@@ -10,6 +10,7 @@ import asyncio
 
 from handlers.requestHandlers import getPatientRequest
 
+import time
 class PatientSelect(QWidget):
     def __init__(self, app, page, main):
         super().__init__()
@@ -39,6 +40,10 @@ class PatientSelect(QWidget):
             if self.patientList.currentItem():
                 self.page.patient_id = self.get_key_from_patient(self.patientList.currentItem().text())
                 if self.page.patient_id:
+                    
+                    patient_select_time = time.time()
+                    self.app.timestamps['end_patient_select_time'] = (patient_select_time - self.app.start_time)
+                    
                     self.main.patientName.setText(self.patientList.currentItem().text())
                     self.patientList.clear()
                     if os.path.isdir("temp"):

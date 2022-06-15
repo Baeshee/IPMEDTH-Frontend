@@ -10,6 +10,7 @@ from handlers.requestHandlers import logoutRequest
 from handlers.utils import open_url
 
 from const import BASE_URL
+import time
 
 class Menu(QWidget):
     def __init__(self, app):
@@ -51,14 +52,25 @@ class Menu(QWidget):
             self.clear()
             self.app.stackedWidget.setCurrentIndex(1)
         elif event == 'metingBtn':
+            menu_btn_time = time.time()
+            if 'menu_btn_time' in self.app.timestamps:
+                self.app.timestamps['start_new_patient_time'] = (menu_btn_time - self.app.start_time)
+            self.app.timestamps['start_patient_select_time'] = (menu_btn_time - self.app.start_time)
+            
             self.clear()
             self.app.meting.select.getPatients()
             self.app.stackedWidget.setCurrentIndex(2)
         elif event == 'resultatenBtn':
+            resultaten_menu_btn = time.time()
+            self.app.timestamps['start_resultaten_time'] = (resultaten_menu_btn - self.app.start_time)
+            
             self.clear()
             self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)
         elif event == 'profileBtn':
+            profile_btn = time.time()
+            self.app.timestamps['start_profile_time'] = (profile_btn - self.app.start_time)
+            
             self.clear()
             open_url(BASE_URL)
 
@@ -67,6 +79,8 @@ class Menu(QWidget):
             status, res = asyncio.run(logoutRequest(self.app.token_type, self.app.token))
             
             if status == 'Ok':
+                logout_btn = time.time()
+                self.app.timestamps['end_profile_start_logout'] = (logout_btn - self.app.start_time)
                 self.app.stackedWidget.setCurrentIndex(0)
                 
     def clear(self):
