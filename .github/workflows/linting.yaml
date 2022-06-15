@@ -25,8 +25,8 @@ jobs:
             name: Check imports are sorted
           # - id: pylint
           #   name: Check with pylint
-          # - id: trailing-whitespace
-          #   name: Trim Trailing Whitespace
+          - id: trailing-whitespace
+            name: Trim Trailing Whitespace
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v3

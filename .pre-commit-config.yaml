@@ -39,9 +39,9 @@ repos:
       #   language: system
       #   types: [python]
       #   entry: pylint
-      # - id: trailing-whitespace
-      #   name: ✄  Trim Trailing Whitespace
-      #   language: system
-      #   types: [text]
-      #   entry: trailing-whitespace-fixer
-      #   stages: [commit, push, manual]
+      - id: trailing-whitespace
+        name: ✄  Trim Trailing Whitespace
+        language: system
+        types: [text]
+        entry: trailing-whitespace-fixer
+        stages: [commit, push, manual]
