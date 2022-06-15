@@ -73,6 +73,9 @@
           <height>1000</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <layout class="QHBoxLayout" name="buttonLayout_3">
          <property name="spacing">
           <number>10</number>
@@ -156,6 +159,9 @@
           <height>1000</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <layout class="QHBoxLayout" name="buttonLayout_4">
          <property name="spacing">
           <number>10</number>
@@ -238,6 +244,9 @@
           <width>1000</width>
           <height>1000</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <layout class="QHBoxLayout" name="buttonLayout">
          <property name="spacing">
@@ -420,6 +429,9 @@
           <width>1000</width>
           <height>1000</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <layout class="QHBoxLayout" name="buttonLayout_2">
          <property name="spacing">

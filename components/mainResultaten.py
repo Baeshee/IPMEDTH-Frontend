@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, Qt, QtCore
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon, QFont, QPixmap
+from PyQt5.QtGui import QIcon, QFont, QPixmap, QCursor
 
 from functools import partial
 import json
@@ -75,6 +75,7 @@ class Main(QWidget):
                 row = row+1
         
         self.sessieTable.table.doubleClicked.connect(self.set_measurements)
+        self.sessieTable.table.setCursor(QCursor(Qt.Qt.PointingHandCursor))
                         
     def set_measurements(self):
         sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
