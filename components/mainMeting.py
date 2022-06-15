@@ -183,7 +183,7 @@ class Main(QWidget):
 
         if text == "upload":
             self.page.stackedWidget.setCurrentIndex(0)
-            self.app.stackedWidget.setCurrentIndex(1)
+            self.app.stacked_widget.setCurrentIndex(1)
 
         if text == "menu":
             self.setHidden()

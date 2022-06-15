@@ -47,15 +47,15 @@ class Menu(QWidget):
         # Menu navigation
         if event == "homeBtn":
             self.clear()
-            self.app.stackedWidget.setCurrentIndex(1)
+            self.app.stacked_widget.setCurrentIndex(1)
         elif event == "metingBtn":
             self.clear()
             self.app.meting.select.getPatients()
-            self.app.stackedWidget.setCurrentIndex(2)
+            self.app.stacked_widget.setCurrentIndex(2)
         elif event == "resultatenBtn":
             self.clear()
             self.app.resultaten.main.loadData()
-            self.app.stackedWidget.setCurrentIndex(3)
+            self.app.stacked_widget.setCurrentIndex(3)
         elif event == "profileBtn":
             self.clear()
             open_url(BASE_URL)
@@ -67,7 +67,7 @@ class Menu(QWidget):
             )
 
             if status == "Ok":
-                self.app.stackedWidget.setCurrentIndex(0)
+                self.app.stacked_widget.setCurrentIndex(0)
 
     def clear(self):
         self.app.meting.select.patientList.clear()

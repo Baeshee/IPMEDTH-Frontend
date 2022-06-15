@@ -25,10 +25,10 @@ class Main(QWidget):
     def handleClickEvent(self, event, object):
         if event == "metingBtnBig":
             self.app.meting.select.getPatients()
-            self.app.stackedWidget.setCurrentIndex(2)
+            self.app.stacked_widget.setCurrentIndex(2)
         if event == "resultBtnBig":
             self.app.resultaten.main.loadData()
-            self.app.stackedWidget.setCurrentIndex(3)
+            self.app.stacked_widget.setCurrentIndex(3)
 
     def timer(self, text):
         if "created" in text:

@@ -1,6 +1,8 @@
+"""Main start application file."""
+
 import sys
 
-from PyQt5 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
 from pages.homePage import HomePage
@@ -10,21 +12,24 @@ from pages.resultatenPage import ResultatenPage
 
 
 class App(QMainWindow):
+    """The main app Qt class."""
+
     def __init__(self):
-        super(App, self).__init__()
+        super().__init__()
         self.setWindowTitle("Handmetingen Tool")
         self.setWindowIcon(QtGui.QIcon("icons/app_icon.png"))
         self.setMinimumSize(1600, 900)
         QtGui.QFontDatabase.addApplicationFont("styles/fonts/Humanist521LightBT.ttf")
-        self.initUi()
+        self.init_ui()
 
         # Parameter storage
         self.token = ""
         self.token_type = ""
         self.user = ""
 
-    def initUi(self):
-        self.stackedWidget = QStackedWidget()
+    def init_ui(self):
+        """Initialize the UI."""
+        self.stacked_widget = QStackedWidget()
 
         # Init widget
         self.login = LoginPage(self)
@@ -33,14 +38,15 @@ class App(QMainWindow):
         self.resultaten = ResultatenPage(self)
 
         # Add to stack
-        self.stackedWidget.addWidget(self.login)
-        self.stackedWidget.addWidget(self.home)
-        self.stackedWidget.addWidget(self.meting)
-        self.stackedWidget.addWidget(self.resultaten)
+        self.stacked_widget.addWidget(self.login)
+        self.stacked_widget.addWidget(self.home)
+        self.stacked_widget.addWidget(self.meting)
+        self.stacked_widget.addWidget(self.resultaten)
 
         # Set all widgets
-        self.setCentralWidget(self.stackedWidget)
-        self.setStyleSheet(open("styles/index.css").read())
+        self.setCentralWidget(self.stacked_widget)
+        with open("styles/index.css", encoding="utf-8") as stylesheet:
+            self.setStyleSheet(stylesheet.read())
 
 
 # Initialize the application

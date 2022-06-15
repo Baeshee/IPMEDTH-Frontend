@@ -5,6 +5,20 @@ target-version = ['py39']
 profile = "black"
 multi_line_output = 3
 
+[tool.pylint.MAIN]
+py-version = "3.9"
+ignore = [
+    "tests",
+]
+load-plugins = [
+    "pylint.extensions.code_style",
+    "pylint.extensions.typing",
+]
+extension-pkg-allow-list = [
+    "PyQt5",
+    "cv2",
+]
+
 [tool.pylint.BASIC]
 good-names = [
     "_",

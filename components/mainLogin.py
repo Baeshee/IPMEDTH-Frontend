@@ -47,7 +47,7 @@ class Main(QWidget):
             self.app.token_type = res[1]
             self.app.user = res[2]
 
-            self.app.stackedWidget.setCurrentIndex(1)
+            self.app.stacked_widget.setCurrentIndex(1)
             self.emailField.setText(""),
             self.passwordField.setText("")
         else:
