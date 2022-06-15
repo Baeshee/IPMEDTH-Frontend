@@ -178,16 +178,16 @@ class Main(QWidget):
 
         if text == "back":
             self.setHidden()
-            self.app.meting.select.get_patients()
-            self.page.stackedWidget.setCurrentIndex(0)
+            self.app.measurement.select.get_patients()
+            self.page.stacked_widget.setCurrentIndex(0)
 
         if text == "upload":
-            self.page.stackedWidget.setCurrentIndex(0)
+            self.page.stacked_widget.setCurrentIndex(0)
             self.app.stacked_widget.setCurrentIndex(1)
 
         if text == "menu":
             self.setHidden()
-            self.page.stackedWidget.setCurrentIndex(0)
+            self.page.stacked_widget.setCurrentIndex(0)
 
         self.closeStream()
         self.thread.releaseCap()

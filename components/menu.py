@@ -55,11 +55,11 @@ class Menu(QWidget):
             self.app.stacked_widget.setCurrentIndex(1)
         elif event == "metingBtn":
             self.clear()
-            self.app.meting.select.get_patients()
+            self.app.measurement.select.get_patients()
             self.app.stacked_widget.setCurrentIndex(2)
         elif event == "resultatenBtn":
             self.clear()
-            self.app.resultaten.main.loadData()
+            self.app.results.main.loadData()
             self.app.stacked_widget.setCurrentIndex(3)
         elif event == "profileBtn":
             self.clear()
@@ -76,5 +76,5 @@ class Menu(QWidget):
 
     def clear(self):
         """Clear the patientlist."""
-        self.app.meting.select.patientList.clear()
-        self.app.meting.main.closeMeting("menu")
+        self.app.measurement.select.patientList.clear()
+        self.app.measurement.main.closeMeting("menu")

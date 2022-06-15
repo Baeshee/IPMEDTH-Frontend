@@ -5,10 +5,10 @@ import sys
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
-from pages.homePage import HomePage
-from pages.loginPage import LoginPage
-from pages.metingPage import MetingPage
-from pages.resultatenPage import ResultatenPage
+from pages.home import HomePage
+from pages.login import LoginPage
+from pages.measurement import MeasurementPage
+from pages.results import ResultsPage
 
 
 class App(QMainWindow):
@@ -34,14 +34,14 @@ class App(QMainWindow):
         # Init widget
         self.login = LoginPage(self)
         self.home = HomePage(self)
-        self.meting = MetingPage(self)
-        self.resultaten = ResultatenPage(self)
+        self.measurement = MeasurementPage(self)
+        self.results = ResultsPage(self)
 
         # Add to stack
         self.stacked_widget.addWidget(self.login)
         self.stacked_widget.addWidget(self.home)
-        self.stacked_widget.addWidget(self.meting)
-        self.stacked_widget.addWidget(self.resultaten)
+        self.stacked_widget.addWidget(self.measurement)
+        self.stacked_widget.addWidget(self.results)
 
         # Set all widgets
         self.setCentralWidget(self.stacked_widget)

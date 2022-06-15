@@ -30,10 +30,10 @@ class Main(QWidget):
     def handle_click_event(self, event, click_object):
         """Handle the click event."""
         if event == "metingBtnBig":
-            self.app.meting.select.get_patients()
+            self.app.measurement.select.get_patients()
             self.app.stacked_widget.setCurrentIndex(2)
         if event == "resultBtnBig":
-            self.app.resultaten.main.loadData()
+            self.app.results.main.loadData()
             self.app.stacked_widget.setCurrentIndex(3)
 
     def timer(self, text):

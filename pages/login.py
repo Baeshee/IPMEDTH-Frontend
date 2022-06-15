@@ -1,15 +1,19 @@
-from PyQt5 import uic
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
+"""Login page."""
+
+from PyQt5.QtWidgets import QHBoxLayout, QWidget
 
 from components.main_login import Main
 
 
 class LoginPage(QWidget):
-    def __init__(self, app):
-        super(LoginPage, self).__init__()
-        self.initPage(app)
+    """Login page QWidget class."""
 
-    def initPage(self, app):
+    def __init__(self, app):
+        super().__init__()
+        self.init_page(app)
+
+    def init_page(self, app):
+        """Initialize the page."""
         self.app = app
         self.login = Main(app)
 
