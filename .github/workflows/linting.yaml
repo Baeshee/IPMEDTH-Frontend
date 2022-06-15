@@ -1,0 +1,62 @@
+---
+name: Linting
+
+# yamllint disable-line rule:truthy
+on: [push, pull_request]
+
+jobs:
+  precommit:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # - id: black
+          #   name: Check code style
+          - id: check-case-conflict
+            name: Check for case conflicts
+          - id: check-docstring-first
+            name: Check docstring is first
+          # - id: end-of-file-fixer
+          #   name: Check End of Files
+          # - id: flake8
+          #   name: Enforcing style guide with flake8
+          # - id: isort
+          #   name: Check imports are sorted
+          # - id: pylint
+          #   name: Check with pylint
+          # - id: trailing-whitespace
+          #   name: Trim Trailing Whitespace
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v3
+      - name: 🏗 Set up Python 3.9
+        id: python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: 🏗 Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+      - name: ⤵️ Restore cached Python PIP packages
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: pip-${{ runner.os }}-v1-${{ steps.python.outputs.python-version }}-${{ hashFiles('.github/workflows/requirements.txt') }}
+          restore-keys: |
+            pip-${{ runner.os }}-v1-${{ steps.python.outputs.python-version }}-
+      - name: 🏗 Install workflow dependencies
+        run: |
+          pip install -r .github/workflows/requirements.txt
+      - name: ⤵️ Restore cached Python virtual environment
+        id: cached-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: >-
+            venv-${{ runner.os }}-v1-${{ steps.python.outputs.python-version }}-
+      - name: 🏗 Install Python dependencies
+        run: pip install -r requirements.txt
+      - name: 🚀 Run pre-commit for ${{ matrix.id }}
+        run: pre-commit run ${{ matrix.id }} --all-files

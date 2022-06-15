@@ -1,0 +1,37 @@
+[tool.black]
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.pylint.BASIC]
+good-names = [
+    "_",
+    "ex",
+    "fp",
+    "i",
+    "id",
+    "j",
+    "k",
+    "on",
+    "Run",
+    "T",
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable= [
+    "too-few-public-methods",
+    "duplicate-code",
+    "format",
+    "unsubscriptable-object",
+]
+
+[tool.pylint.SIMILARITIES]
+ignore-imports = true
+
+[tool.pylint.FORMAT]
+max-line-length=88
+
+[tool.pylint.DESIGN]
+max-attributes=20
