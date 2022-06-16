@@ -74,16 +74,16 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
         
-        self.sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
-        self.measurements = self.sessions[self.sessieTable.table.currentRow()]['measurements']
         self.sessieTable.table.doubleClicked.connect(self.set_measurements)
                         
     def set_measurements(self):
+        sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
+        measurements = sessions[self.sessieTable.table.currentRow()]['measurements']
         self.setHidden()
         first_tab = None
         
-        for m in range(len(self.measurements)):
-            m_data = self.measurements[m]
+        for m in range(len(measurements)):
+            m_data = measurements[m]
             data = {}
             data['finger_thumb'] = json.loads(m_data['finger_thumb'])
             data['finger_index'] = json.loads(m_data['finger_index'])
