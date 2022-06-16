@@ -21,6 +21,7 @@ from handlers.hand_detect_module import handDetect
 from handlers.createPlot import createPlot
 
 import time
+import json
 
 class VideoThread(QThread):
     change_pixmap_signal = pyqtSignal(np.ndarray)
@@ -135,7 +136,13 @@ class Main(QWidget):
         meting_time = time.time()
         if 'meting_time' in self.app.timestamps:
             self.app.timestamps['end_second_meting_time'] = (meting_time - self.app.start_time)
+            f = open("test_timestamps.json", "w")
+            json.dump(self.timestamps, f)
+            f.close()
         self.app.timestamps['end_first_meting_time'] = (meting_time - self.app.start_time)
+        f = open("test_timestamps.json", "w")
+        json.dump(self.timestamps, f)
+        f.close()
         
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(handleRequests(self.app, self.app.token_type, self.app.token, self.page.patient_id, self.resultaten, self.imageNames, self))
