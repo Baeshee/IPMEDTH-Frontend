@@ -56,7 +56,7 @@ class Main(QWidget):
             print(res)
             
     def connectEvents(self):
-        self.patientTable.doubleClicked.connect(self.set_sessions)
+        self.patientTable.clicked.connect(self.set_sessions)
             
     def set_sessions(self):        
         if self.sessiesTabLayout.itemAt(0):
@@ -75,7 +75,7 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
         
-        self.sessieTable.table.doubleClicked.connect(self.set_measurements)
+        self.sessieTable.table.clicked.connect(self.set_measurements)
         self.sessieTable.table.setCursor(QCursor(Qt.Qt.PointingHandCursor))
                         
     def set_measurements(self):
