@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap, QCursor
 from functools import partial
 import json
 import asyncio
+import time
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 from handlers.requestHandlers import getPatientRequest, getImageRequest
@@ -28,6 +29,11 @@ class Main(QWidget):
         self.placeholder.setFont(QFont('Calibri', 24))
         self.patientNameField.textChanged.connect(self.on_search)
         
+        self.toast.setVisible(False)
+        self.toast.setText("Data wordt geladen...")
+        self.toast.setStyleSheet("background-color: #f49a3f;") 
+        self.connectEvents() 
+        
     def setHidden(self):
         self.detailTabWidget.setTabEnabled(1,False)
         for i in range(4):
@@ -49,12 +55,12 @@ class Main(QWidget):
                 row = row+1
                 
                 self.patient_data.append(patient)
-                self.connectEvents() 
         else: 
             print(res)
             
     def connectEvents(self):
         self.patientTable.clicked.connect(self.set_sessions)
+        self.sessieTable.table.clicked.connect(self.load_measurements)
             
     def set_sessions(self):        
         if self.sessiesTabLayout.itemAt(0):
@@ -73,8 +79,11 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
         
-        self.sessieTable.table.clicked.connect(self.set_measurements)
         self.sessieTable.table.setCursor(QCursor(Qt.Qt.PointingHandCursor))
+        
+    def load_measurements(self):
+        self.toast.setVisible(True)
+        self.set_measurements()
                         
     def set_measurements(self):
         sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
@@ -156,6 +165,7 @@ class Main(QWidget):
         self.detailTabWidget.setCurrentIndex(1)
         self.metingenTabWidget.setCurrentIndex(first_tab)
         self.detailTabWidget.setTabEnabled(1,True)
+        self.toast.setVisible(False)
             
     @QtCore.pyqtSlot()
     def on_search(self):

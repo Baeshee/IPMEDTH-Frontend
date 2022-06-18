@@ -399,7 +399,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Profiel</string>
+            <string>Account</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

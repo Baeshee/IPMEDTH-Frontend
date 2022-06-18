@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget, QMessageBox
 from PyQt5 import uic, QtGui, QtCore
 import sys
 
@@ -25,8 +25,15 @@ class App(QMainWindow):
         self.user = ''
     
     def closeEvent(self, event):
-        if os.path.isdir("temp"):
-            shutil.rmtree("temp")
+        reply = QMessageBox.question(self, 'Afsluiten', 'Weet u zeker dat u de applicatie wilt afsluiten?',
+        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            if os.path.isdir("temp"):
+                shutil.rmtree("temp")
+            event.accept()
+        else:
+            event.ignore()
+        
         
     def initUi(self):
         self.stackedWidget = QStackedWidget()
