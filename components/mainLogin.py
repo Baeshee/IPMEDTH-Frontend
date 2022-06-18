@@ -49,6 +49,7 @@ class Main(QWidget):
             self.app.stackedWidget.setCurrentIndex(1)
             self.emailField.setText(''),
             self.passwordField.setText('') 
+            self.toast.setHidden(True)
         else: 
             self.toast.setText(res)
             self.toast.setStyleSheet("background-color: #bd1321;")
