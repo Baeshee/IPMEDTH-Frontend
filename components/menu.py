@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-import asyncio
 
 from functools import partial
 import asyncio

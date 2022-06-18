@@ -177,7 +177,9 @@ class Main(QWidget):
             self.page.stackedWidget.setCurrentIndex(0)
             
         self.closeStream()
-        self.thread.releaseCap()        
+        self.thread.releaseCap() 
+        self.setHidden()
+        self.tabWidget.setCurrentIndex(0)       
         
     def handleData(self, name, data, img):
         self.resultaten[name] = data

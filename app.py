@@ -7,6 +7,9 @@ from pages.homePage import HomePage
 from pages.metingPage import MetingPage
 from pages.resultatenPage import ResultatenPage
 
+import os
+import shutil
+
 class App(QMainWindow):
     def __init__(self):
         super(App, self).__init__()
@@ -21,6 +24,9 @@ class App(QMainWindow):
         self.token_type = '' 
         self.user = ''
     
+    def closeEvent(self, event):
+        if os.path.isdir("temp"):
+            shutil.rmtree("temp")
         
     def initUi(self):
         self.stackedWidget = QStackedWidget()

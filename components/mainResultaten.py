@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, Qt, QtCore
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon, QFont, QPixmap
+from PyQt5.QtGui import QIcon, QFont, QPixmap, QCursor
 
 from functools import partial
 import json
@@ -22,8 +22,6 @@ class Main(QWidget):
         self.patient_data = []
         self.sessiesTabLayout.setContentsMargins(0,0,0,0)
         self.pixmap = QPixmap()
-        self.sessions = []
-        self.measurements = []
         
         self.placeholder = QLabel('Deze patient heeft nog geen sessies')
         self.placeholder.setAlignment(Qt.Qt.AlignCenter)
@@ -56,7 +54,7 @@ class Main(QWidget):
             print(res)
             
     def connectEvents(self):
-        self.patientTable.doubleClicked.connect(self.set_sessions)
+        self.patientTable.clicked.connect(self.set_sessions)
             
     def set_sessions(self):        
         if self.sessiesTabLayout.itemAt(0):
@@ -75,17 +73,18 @@ class Main(QWidget):
                 self.sessieTable.table.setItem(row, 2, QtWidgets.QTableWidgetItem(session['date']))
                 row = row+1
         
-        self.sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
-        self.measurements = self.sessions[self.sessieTable.table.currentRow()]['measurements']
-        self.sessieTable.table.doubleClicked.connect(self.set_measurements)
+        self.sessieTable.table.clicked.connect(self.set_measurements)
+        self.sessieTable.table.setCursor(QCursor(Qt.Qt.PointingHandCursor))
                         
     def set_measurements(self):
+        sessions = self.patient_data[self.patientTable.currentRow()]['sessions']
+        measurements = sessions[self.sessieTable.table.currentRow()]['measurements']
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         self.setHidden()
         first_tab = None
         
-        for m in range(len(self.measurements)):
-            m_data = self.measurements[m]
+        for m in range(len(measurements)):
+            m_data = measurements[m]
             data = {}
             data['finger_thumb'] = json.loads(m_data['finger_thumb'])
             data['finger_index'] = json.loads(m_data['finger_index'])
