@@ -130,3 +130,6 @@ async def getImageRequest(token_type, token, image):
             if r.status == 200:
                 res = await r.read()
                 return 'Ok', res
+            else:
+                res = await r.json()
+                return 'Failed', res
