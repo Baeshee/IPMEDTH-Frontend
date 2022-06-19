@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 
@@ -64,10 +64,15 @@ class Menu(QWidget):
 
         # Logout request
         elif event == 'logoutBtn':
-            status, res = asyncio.run(logoutRequest(self.app.token_type, self.app.token))
+            reply = QMessageBox.question(self, 'Afsluiten', 'Weet u zeker dat u wilt uitloggen?',
+            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                status, res = asyncio.run(logoutRequest(self.app.token_type, self.app.token))
             
-            if status == 'Ok':
-                self.app.stackedWidget.setCurrentIndex(0)
+                if status == 'Ok':
+                    self.app.stackedWidget.setCurrentIndex(0)
+            else:
+                return
                 
     def clear(self):
         self.app.meting.select.patientList.clear()

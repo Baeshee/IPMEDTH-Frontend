@@ -90,3 +90,9 @@ QTableWidget {
     border: none;
     border-radius: 10px;
 }
+
+QMessageBox QPushButton {
+    width: 40px;
+    height: 20px;
+    font-size: 15px;
+}

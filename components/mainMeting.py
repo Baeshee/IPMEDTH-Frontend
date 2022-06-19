@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMessageBox
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot, QTimer
 from PyQt5.QtGui import QPixmap, QImage, QFont
 from PyQt5 import uic, Qt
@@ -64,6 +64,7 @@ class Main(QWidget):
         
         self.resultaten = {}
         self.imageNames = {}
+        self.views = []
         
         self.thread = VideoThread()
         self.thread.change_pixmap_signal.connect(self.update_stream)
@@ -111,29 +112,40 @@ class Main(QWidget):
             data["hand_view"] = "thumb_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(1,True)
+            self.views.append("duim aanzicht")
             
         if name == 'pinkView':
             data["hand_view"] = "pink_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(2,True)
+            self.views.append("pink aanzicht")
             
             
         if name == 'vingerView':
             data["hand_view"] = "finger_side"
             self.handleData(name, data, img)
-            self.nestedTabWidget.setTabEnabled(0,True)            
+            self.nestedTabWidget.setTabEnabled(0,True)
+            self.views.append("vinger aanzicht")            
             
         if name == 'rugView':
             data["hand_view"] = "back_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(3,True)
+            self.views.append("rug aanzicht")
             
         
     def upload(self):
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        asyncio.run(handleRequests(self.app, self.app.token_type, self.app.token, self.page.patient_id, self.resultaten, self.imageNames, self))
-        self.closeMeting('upload')
+        views = ', '.join(self.views)
         
+        reply = QMessageBox.question(self, 'Afsluiten', f'Weet u zeker dat u de metingen: {views} wilt opslaan?',
+        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+            asyncio.run(handleRequests(self.app, self.app.token_type, self.app.token, self.page.patient_id, self.resultaten, self.imageNames, self))
+            self.closeMeting('upload')
+        else:
+            return
+
         
     def timer(self, text):
         timer = QTimer(self)

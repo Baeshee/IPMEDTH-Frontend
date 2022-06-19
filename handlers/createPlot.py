@@ -2,13 +2,20 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib.lines import Line2D
 import pandas as pd
 
 from handlers.modelHandler import PandasModel
 
 
 def createPlot(data):
+    legend_elements = []
     colors = ["#ffe5b4", "#804080", "#ffcc00", "#30ff30", "#1565c0", '#ff3030']
+    labels = ['Duim', 'Wijsvinger', 'Middelvinger','Ringvinger', 'Pink', 'Pols']
+    
+    for c in range(len(colors)):
+        legend_elements.append(Line2D([0], [0], marker='o', color='w', label=labels[c], markerfacecolor=colors[c], markersize=8))
+    
     finger_thumb = pd.DataFrame(data['finger_thumb'])
     finger_index = pd.DataFrame(data['finger_index'])
     finger_middle = pd.DataFrame(data['finger_middle'])
@@ -48,5 +55,6 @@ def createPlot(data):
         #             size=4, 
         #             color='darkslategrey')
     ax.invert_yaxis()
+    ax.legend(handles=legend_elements, loc='upper right', prop={"size": 8})
     
     return fig, model

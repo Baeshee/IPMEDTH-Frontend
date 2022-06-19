@@ -85,7 +85,7 @@ async def uploadRequest(token_type, token, s_id, handData, imagePath):
         res = r.json()
         return 'Ok', res['message']
     else:
-        res = r.json()
+        res = await r.json()
         return 'Failed', res['message']
 
 
@@ -104,7 +104,7 @@ async def makePatientRequest(token_type, token, name, email, date):
                 res = await r.json()
                 return 'Ok', res
             else:
-                res = r.json()
+                res = await r.json()
                 return 'Failed', res['message']
 
         
