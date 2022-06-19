@@ -62,7 +62,8 @@ class Main(QWidget):
         self.patientTable.clicked.connect(self.set_sessions)
         self.sessieTable.table.clicked.connect(self.load_measurements)
             
-    def set_sessions(self):        
+    def set_sessions(self):
+        self.detailTabWidget.setCurrentIndex(0)       
         if self.sessiesTabLayout.itemAt(0):
             for i in range(self.sessiesTabLayout.count()):
                 self.sessiesTabLayout.itemAt(i).widget().setParent(None)
