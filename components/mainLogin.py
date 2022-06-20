@@ -50,6 +50,7 @@ class Main(QWidget):
             self.emailField.setText(''),
             self.passwordField.setText('') 
             self.toast.setHidden(True)
+            self.app.home.menu.homeBtn.setStyleSheet('background-color: #00aaa6;')
         else: 
             self.toast.setText(res)
             self.toast.setStyleSheet("background-color: #bd1321;")

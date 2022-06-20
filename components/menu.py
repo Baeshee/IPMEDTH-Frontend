@@ -50,14 +50,17 @@ class Menu(QWidget):
         if event == 'homeBtn':
             self.clear()
             self.app.stackedWidget.setCurrentIndex(1)
+            self.app.home.menu.homeBtn.setStyleSheet('background-color: #00aaa6;')
         elif event == 'metingBtn':
             self.clear()
             self.app.meting.select.getPatients()
             self.app.stackedWidget.setCurrentIndex(2)
+            self.app.meting.menu.metingBtn.setStyleSheet('background-color: #00aaa6;')
         elif event == 'resultatenBtn':
             self.clear()
             self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)
+            self.app.resultaten.menu.resultatenBtn.setStyleSheet('background-color: #00aaa6;')
         elif event == 'profileBtn':
             self.clear()
             open_url(BASE_URL)

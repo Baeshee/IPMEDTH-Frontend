@@ -112,26 +112,30 @@ class Main(QWidget):
             data["hand_view"] = "thumb_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(1,True)
-            self.views.append("duim aanzicht")
+            if "duim aanzicht" not in self.views:
+                self.views.append("duim aanzicht")
             
         if name == 'pinkView':
             data["hand_view"] = "pink_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(2,True)
-            self.views.append("pink aanzicht")
+            if "pink aanzicht" not in self.views:
+                self.views.append("pink aanzicht")
             
             
         if name == 'vingerView':
             data["hand_view"] = "finger_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(0,True)
-            self.views.append("vinger aanzicht")            
+            if "vinger aanzicht" not in self.views:
+                self.views.append("vinger aanzicht")           
             
         if name == 'rugView':
             data["hand_view"] = "back_side"
             self.handleData(name, data, img)
             self.nestedTabWidget.setTabEnabled(3,True)
-            self.views.append("rug aanzicht")
+            if "rug aanzicht" not in self.views:
+                self.views.append("rug aanzicht")
             
         
     def upload(self):

@@ -30,9 +30,11 @@ class Main(QWidget):
         if event == 'metingBtnBig':
             self.app.meting.select.getPatients()
             self.app.stackedWidget.setCurrentIndex(2)
+            self.app.meting.menu.metingBtn.setStyleSheet('background-color: #00aaa6;')
         if event == 'resultBtnBig':
             self.app.resultaten.main.loadData()
             self.app.stackedWidget.setCurrentIndex(3)
+            self.app.resultaten.menu.resultatenBtn.setStyleSheet('background-color: #00aaa6;')
             
     def timer(self, text):
         if "created" in text:
