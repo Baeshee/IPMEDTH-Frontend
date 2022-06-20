@@ -3,9 +3,10 @@ from datetime import date
 import json
 
 import aiohttp
+from const import BASE_URL
 
 async def loginRequest(email, password):
-    url = "https://www.ipmedth.nl/api/auth/login"
+    url = BASE_URL + "/api/auth/login"
     payload = {
         'email': email,
         'password': password
@@ -26,7 +27,7 @@ async def loginRequest(email, password):
 
 async def logoutRequest(token_type, token):
     headers = {'Authorization': f'{token_type} {token}'}
-    url = "https://www.ipmedth.nl/api/auth/logout"
+    url = BASE_URL + "/api/auth/logout"
 
     async with aiohttp.ClientSession() as request:
         async with request.post(url, headers=headers) as r:
@@ -40,7 +41,7 @@ async def logoutRequest(token_type, token):
 
 async def sessionRequest(token_type, token, patient):
     headers = {'Authorization': f'{token_type} {token}'}
-    url = "https://www.ipmedth.nl/api/sessions"
+    url = BASE_URL + "/api/sessions"
     
     body = {
         "patient_id": patient,
@@ -58,7 +59,7 @@ async def sessionRequest(token_type, token, patient):
         
 async def uploadRequest(token_type, token, s_id, handData, imagePath):
     headers = {'Authorization': f'{token_type} {token}'}
-    url = "https://www.ipmedth.nl/api/measurements"
+    url = BASE_URL + "/api/measurements"
     image = open(imagePath, 'rb')
 
     body = {
@@ -91,7 +92,7 @@ async def uploadRequest(token_type, token, s_id, handData, imagePath):
 
 async def makePatientRequest(token_type, token, name, email, date):
     headers = {'Authorization': f'{token_type} {token}'}
-    url = "https://www.ipmedth.nl/api/patients"
+    url = BASE_URL + "/api/patients"
     
     body = {
         "name": name,
@@ -110,7 +111,7 @@ async def makePatientRequest(token_type, token, name, email, date):
         
 async def getPatientRequest(token_type, token):
     headers = {'Authorization': f'{token_type} {token}'}
-    url = "https://www.ipmedth.nl/api/patients"
+    url = BASE_URL + "/api/patients"
     
     async with aiohttp.ClientSession() as request:
         async with request.get(url, headers=headers) as r:
@@ -123,7 +124,7 @@ async def getPatientRequest(token_type, token):
         
 async def getImageRequest(token_type, token, image):
     headers = {'Authorization': f'{token_type} {token}'}
-    url = f"https://www.ipmedth.nl/images/measurements/{image}"
+    url = BASE_URL + f"/images/measurements/{image}"
     
     async with aiohttp.ClientSession() as request:
         async with request.get(url, headers=headers) as r:
