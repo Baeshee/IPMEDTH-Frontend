@@ -1,12 +1,11 @@
 import matplotlib
-
-matplotlib.use("Qt5Agg")
 import pandas as pd
-from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
 
 from handlers.modelHandler import PandasModel
+
+matplotlib.use("Qt5Agg")
 
 
 def createPlot(data):

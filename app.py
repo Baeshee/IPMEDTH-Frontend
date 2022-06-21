@@ -2,7 +2,7 @@ import os
 import shutil
 import sys
 
-from PyQt5 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QStackedWidget
 
 from pages.homePage import HomePage

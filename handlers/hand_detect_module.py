@@ -1,10 +1,5 @@
-import json
-import math
-from itertools import islice
-
 import cv2 as cv
 import mediapipe as mp
-import numpy as np
 
 
 class handDetect:

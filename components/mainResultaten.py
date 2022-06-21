@@ -1,13 +1,11 @@
 import asyncio
 import json
-import time
-from functools import partial
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import Qt, QtCore, QtWidgets, uic
-from PyQt5.QtGui import QCursor, QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
+from PyQt5.QtGui import QCursor, QFont, QPixmap
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 from components.sessieTable import SessieTable
 from handlers.createPlot import createPlot
