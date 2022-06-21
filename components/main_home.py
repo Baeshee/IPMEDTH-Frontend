@@ -33,7 +33,7 @@ class Main(QWidget):
             self.app.measurement.select.get_patients()
             self.app.stacked_widget.setCurrentIndex(2)
         if event == "resultBtnBig":
-            self.app.results.main.loadData()
+            self.app.results.main.load_data()
             self.app.stacked_widget.setCurrentIndex(3)
 
     def timer(self, text):

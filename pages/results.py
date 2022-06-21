@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QHBoxLayout, QStackedWidget, QWidget
 
-from components.mainResultaten import Main
+from components.main_results import Main
 from components.menu import Menu
 
 

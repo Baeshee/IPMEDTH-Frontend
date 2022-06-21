@@ -59,7 +59,7 @@ class Menu(QWidget):
             self.app.stacked_widget.setCurrentIndex(2)
         elif event == "resultatenBtn":
             self.clear()
-            self.app.results.main.loadData()
+            self.app.results.main.load_data()
             self.app.stacked_widget.setCurrentIndex(3)
         elif event == "profileBtn":
             self.clear()

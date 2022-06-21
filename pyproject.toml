@@ -44,6 +44,8 @@ disable= [
     "unsubscriptable-object",
     "too-many-arguments",
     "no-member",
+    "too-many-statements",
+    "too-many-branches",
 ]
 
 [tool.pylint.SIMILARITIES]

@@ -1,3 +1,5 @@
+"""Main results component."""
+
 import asyncio
 import json
 
@@ -13,12 +15,14 @@ from handlers.request_handlers import get_image_request, get_patient_request
 
 
 class Main(QWidget):
+    """Main results QWidget class."""
+
     def __init__(self, app):
         super().__init__()
         uic.loadUi("layout/mainResultaten.ui", self)
         self.app = app
         self.session_table = SessionTable()
-        self.setHidden()
+        self.set_hidden()
         self.patient_data = []
         self.sessiesTabLayout.setContentsMargins(0, 0, 0, 0)
         self.pixmap = QPixmap()
@@ -30,12 +34,14 @@ class Main(QWidget):
         self.placeholder.setFont(QFont("Calibri", 24))
         self.patientNameField.textChanged.connect(self.on_search)
 
-    def setHidden(self):
+    def set_hidden(self):
+        """Set tab to hidden."""
         self.detailTabWidget.setTabEnabled(1, False)
         for i in range(4):
             self.metingenTabWidget.setTabEnabled(i, False)
 
-    def loadData(self):
+    def load_data(self):
+        """Load the results data from the API."""
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(
             get_patient_request(self.app.token_type, self.app.token)
@@ -62,14 +68,16 @@ class Main(QWidget):
                 row = row + 1
 
                 self.patient_data.append(patient)
-                self.connectEvents()
+                self.connect_events()
         else:
             print(res)
 
-    def connectEvents(self):
+    def connect_events(self):
+        """Connect events to the patient table."""
         self.patientTable.doubleClicked.connect(self.set_sessions)
 
     def set_sessions(self):
+        """Set the sessions for the selected patient."""
         if self.sessiesTabLayout.itemAt(0):
             for i in range(self.sessiesTabLayout.count()):
                 self.sessiesTabLayout.itemAt(i).widget().setParent(None)
@@ -105,8 +113,9 @@ class Main(QWidget):
         self.session_table.table.doubleClicked.connect(self.set_measurements)
 
     def set_measurements(self):
+        """Set the measurements for the selected session."""
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        self.setHidden()
+        self.set_hidden()
         first_tab = None
 
         for m in range(len(self.measurements)):
@@ -140,7 +149,7 @@ class Main(QWidget):
                 self.vingerTable.setModel(model)
 
                 self.metingenTabWidget.setTabEnabled(0, True)
-                if first_tab == None:
+                if first_tab is None:
                     first_tab = 0
 
             elif m_data["hand_view"] == "thumb_side":
@@ -152,7 +161,7 @@ class Main(QWidget):
                 self.duimTable.setModel(model)
 
                 self.metingenTabWidget.setTabEnabled(1, True)
-                if first_tab == None:
+                if first_tab is None:
                     first_tab = 1
 
             elif m_data["hand_view"] == "pink_side":
@@ -164,7 +173,7 @@ class Main(QWidget):
                 self.pinkTable.setModel(model)
 
                 self.metingenTabWidget.setTabEnabled(2, True)
-                if first_tab == None:
+                if first_tab is None:
                     first_tab = 2
 
             elif m_data["hand_view"] == "back_side":
@@ -176,7 +185,7 @@ class Main(QWidget):
                 self.rugTable.setModel(model)
 
                 self.metingenTabWidget.setTabEnabled(3, True)
-                if first_tab == None:
+                if first_tab is None:
                     first_tab = 3
 
         self.detailTabWidget.setCurrentIndex(1)
@@ -185,6 +194,7 @@ class Main(QWidget):
 
     @QtCore.pyqtSlot()
     def on_search(self):
+        """Search for results based on patient name."""
         text = self.patientNameField.text()
         for row in range(self.patientTable.rowCount()):
             item = self.patientTable.item(row, 1)
@@ -194,4 +204,5 @@ class Main(QWidget):
                 self.patientTable.setRowHidden(row, False)
 
     def filter(self, text, keywords):
+        """Filter results based on keywords."""
         return text.lower() in keywords.lower()
