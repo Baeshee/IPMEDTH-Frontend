@@ -39,26 +39,26 @@
 # for k, v in df.iterrows():
 #     if "THUMB" in k:
 #         ax.scatter(v[0], v[1], color=colors[0])
-        
+
 #     if "INDEX" in k:
 #         ax.scatter(v[0], v[1], color=colors[1])
-        
+
 #     if "MIDDLE" in k:
 #         ax.scatter(v[0], v[1], color=colors[2])
-        
+
 #     if "RING" in k:
 #         ax.scatter(v[0], v[1], color=colors[3])
-        
+
 #     if "PINKY" in k:
 #         ax.scatter(v[0], v[1], color=colors[4])
-    
+
 #     if "WRIST" in k:
 #         ax.scatter(v[0], v[1], color=colors[5])
-        
+
 #     ax.annotate(k, v,
-#                 xytext=(-10,10), 
+#                 xytext=(-10,10),
 #                 textcoords='offset points',
-#                 size=6, 
+#                 size=6,
 #                 color='darkslategrey')
 
 # plt.show()

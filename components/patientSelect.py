@@ -10,10 +10,11 @@ import asyncio
 
 from handlers.requestHandlers import getPatientRequest
 
+
 class PatientSelect(QWidget):
     def __init__(self, app, page, main):
         super().__init__()
-        uic.loadUi('layout/patientSelect.ui', self)
+        uic.loadUi("layout/patientSelect.ui", self)
         self.app = app
         self.page = page
         self.main = main
@@ -21,23 +22,22 @@ class PatientSelect(QWidget):
         self.connectBtn()
         self.connectClickEvent()
         self.toast.setHidden(True)
-        
+
     def connectClickEvent(self):
         self.patientNameField.textChanged.connect(self.on_search)
 
     def connectBtn(self):
-        buttons = [
-            self.continueBtn,
-            self.switchBtn
-        ]
-        
+        buttons = [self.continueBtn, self.switchBtn]
+
         for btn in buttons:
             btn.clicked.connect(partial(self.handleBtn, btn.objectName()))
-        
+
     def handleBtn(self, name):
-        if name == 'continueBtn':
+        if name == "continueBtn":
             if self.patientList.currentItem():
-                self.page.patient_id = self.get_key_from_patient(self.patientList.currentItem().text())
+                self.page.patient_id = self.get_key_from_patient(
+                    self.patientList.currentItem().text()
+                )
                 if self.page.patient_id:
                     self.main.patientName.setText(self.patientList.currentItem().text())
                     self.patientList.clear()
@@ -53,25 +53,26 @@ class PatientSelect(QWidget):
 
         if name == "switchBtn":
             self.page.stackedWidget.setCurrentIndex(1)
-            self.patientNameField.setText('')
-    
-            
+            self.patientNameField.setText("")
+
     def getPatients(self):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        status, res = asyncio.run(getPatientRequest(self.app.token_type, self.app.token))
-        if status == 'Ok':
+        status, res = asyncio.run(
+            getPatientRequest(self.app.token_type, self.app.token)
+        )
+        if status == "Ok":
             for patient in res:
-                self.patientList.addItem(patient['name'])
-                self.patient_ids[patient['id']] = patient['name']
-        else: 
+                self.patientList.addItem(patient["name"])
+                self.patient_ids[patient["id"]] = patient["name"]
+        else:
             print(res)
-            
+
     def get_key_from_patient(self, value):
         for key, val in self.patient_ids.items():
             if val == value:
                 return key
         return None
-    
+
     @QtCore.pyqtSlot()
     def on_search(self):
         text = self.patientNameField.text()
@@ -81,6 +82,6 @@ class PatientSelect(QWidget):
                 item.setHidden(not self.filter(text, item.text()))
             else:
                 item.setHidden(False)
-    
+
     def filter(self, text, keywords):
         return text.lower() in keywords.lower()
