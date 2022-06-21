@@ -5,16 +5,16 @@ from requestHandlers import loginRequest, makePatientRequest, getPatientRequest,
 import aiohttp
     
 def test_login_valid():
-        email = "test@ipmedth.nl"
-        password = "welkom1234"
+        email = input("Correct email: ")
+        password = input("Correct password: ")
         status, res = asyncio.run(loginRequest(email, password))
         global r
         r = res
         assert status == "Ok", "Test Failed"
     
 def test_login_invalid():
-    email = "top@ipmedth.nl"
-    password = "welkom1434"
+    email = input("Incorrect email: ")
+    password = input("Incorrect password: ")
     status, res = asyncio.run(loginRequest(email, password))
     assert status == "Failed", "Test Failed"
     
@@ -22,7 +22,7 @@ def test_new_patient_valid():
     token_type = "Bearer"
     token = r[0]
     name = "Unit Test"
-    email = "unittest18@ipmedth.nl"
+    email = input("Email that doesnt exist yet: ")
     date = "2022-01-01"
     status, res = asyncio.run(makePatientRequest(token_type, token, name, email, date))
     assert status == "Ok", "Test Failed"
@@ -31,7 +31,7 @@ def test_new_patient_invalid():
     token_type = "Bearer"
     token = r[0]
     name = ""
-    email = "unittest10@ipmedth.nl"
+    email = input("Already existing email: ")
     date = "2022-01-01"
     status, res = asyncio.run(makePatientRequest(token_type, token, name, email, date))
     assert status == "Failed", "Test Failed"
