@@ -10,6 +10,7 @@ from PyQt5.QtGui import QCursor, QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
 
 from components.sessieTable import SessieTable
+from exceptions import NoMeasurementsError
 from handlers.createPlot import createPlot
 from handlers.requestHandlers import getImageRequest, getPatientRequest
 
@@ -187,10 +188,15 @@ class Main(QWidget):
                 if first_tab == None:
                     first_tab = 3
 
-        self.detailTabWidget.setCurrentIndex(1)
-        self.metingenTabWidget.setCurrentIndex(first_tab)
-        self.detailTabWidget.setTabEnabled(1, True)
-        self.toast.setVisible(False)
+        try:
+            self.detailTabWidget.setCurrentIndex(1)
+            self.metingenTabWidget.setCurrentIndex(first_tab)
+            self.detailTabWidget.setTabEnabled(1, True)
+            self.toast.setVisible(False)
+        except TypeError as exception:
+            raise NoMeasurementsError(
+                "The patient has no measurements for this session"
+            ) from exception
 
     @QtCore.pyqtSlot()
     def on_search(self):
