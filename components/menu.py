@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox, QWidget
 
 from const import BASE_URL
-from handlers.requestHandlers import logoutRequest
+from handlers.requests import logout_request
 from handlers.utils import open_url
 
 
@@ -76,7 +76,7 @@ class Menu(QWidget):
             )
             if reply == QMessageBox.Yes:
                 status, res = asyncio.run(
-                    logoutRequest(self.app.token_type, self.app.token)
+                    logout_request(self.app.token_type, self.app.token)
                 )
 
                 if status == "Ok":

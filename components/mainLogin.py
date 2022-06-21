@@ -5,7 +5,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLineEdit, QWidget
 
-from handlers.requestHandlers import loginRequest
+from handlers.requests import login_request
 
 
 class Main(QWidget):
@@ -40,7 +40,7 @@ class Main(QWidget):
     def handleLogin(self):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         status, res = asyncio.run(
-            loginRequest(self.emailField.text(), self.passwordField.text())
+            login_request(self.emailField.text(), self.passwordField.text())
         )
         if status == "Ok":
             self.app.token = res[0]
