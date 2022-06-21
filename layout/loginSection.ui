@@ -235,7 +235,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>Password:</string>
+                     <string>Wachtwoord:</string>
                     </property>
                    </widget>
                   </item>
@@ -308,7 +308,7 @@
                         <enum>QLineEdit::Password</enum>
                        </property>
                        <property name="placeholderText">
-                        <string>Password</string>
+                        <string>Wachtwoord</string>
                        </property>
                       </widget>
                      </item>
@@ -380,7 +380,7 @@
                      <cursorShape>PointingHandCursor</cursorShape>
                     </property>
                     <property name="text">
-                     <string>Login</string>
+                     <string>Inloggen</string>
                     </property>
                    </widget>
                   </item>
