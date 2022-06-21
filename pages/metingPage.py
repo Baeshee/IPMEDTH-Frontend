@@ -1,10 +1,10 @@
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QStackedWidget
 from PyQt5 import uic
+from PyQt5.QtWidgets import QHBoxLayout, QStackedWidget, QWidget
 
-from components.menu import Menu
 from components.mainMeting import Main
-from components.patientSelect import PatientSelect
+from components.menu import Menu
 from components.newPatient import NewPatient
+from components.patientSelect import PatientSelect
 
 
 class MetingPage(QWidget):

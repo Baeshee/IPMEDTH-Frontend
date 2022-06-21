@@ -1,12 +1,11 @@
-from PyQt5.QtWidgets import QWidget
-from PyQt5 import uic
-from PyQt5.QtGui import QIcon
-from PyQt5 import QtCore
-
-from functools import partial
+import asyncio
 import os
 import shutil
-import asyncio
+from functools import partial
+
+from PyQt5 import QtCore, uic
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget
 
 from handlers.requestHandlers import getPatientRequest
 

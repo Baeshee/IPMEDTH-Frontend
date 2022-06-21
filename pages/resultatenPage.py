@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QStackedWidget
 from PyQt5 import uic
+from PyQt5.QtWidgets import QHBoxLayout, QStackedWidget, QWidget
 
-from components.menu import Menu
 from components.mainResultaten import Main
+from components.menu import Menu
 
 
 class ResultatenPage(QWidget):
