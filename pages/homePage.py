@@ -1,5 +1,4 @@
-from PyQt5 import uic
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QWidget
 
 from components.mainHome import Main
 from components.menu import Menu
@@ -7,7 +6,7 @@ from components.menu import Menu
 
 class HomePage(QWidget):
     def __init__(self, app):
-        super(HomePage, self).__init__()
+        super().__init__()
         self.initPage(app)
 
     def initPage(self, app):

@@ -1,4 +1,3 @@
-from PyQt5 import uic
 from PyQt5.QtWidgets import QHBoxLayout, QStackedWidget, QWidget
 
 from components.mainResultaten import Main
@@ -7,7 +6,7 @@ from components.menu import Menu
 
 class ResultatenPage(QWidget):
     def __init__(self, app):
-        super(ResultatenPage, self).__init__()
+        super().__init__()
         self.initPage(app)
 
     def initPage(self, app):

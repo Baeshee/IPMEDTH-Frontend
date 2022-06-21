@@ -4,7 +4,6 @@ import shutil
 from functools import partial
 
 from PyQt5 import QtCore, uic
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
 from handlers.requests import get_patient_request

@@ -1,19 +1,15 @@
 import asyncio
-import shutil
 from functools import partial
 
 import cv2 as cv
 import matplotlib
 import numpy as np
-import pandas as pd
-from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
 from PIL import Image
-from PyQt5 import Qt, uic
+from PyQt5 import uic
 from PyQt5.QtCore import QThread, QTimer, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QFont, QImage, QPixmap
+from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget
 
 from handlers.createPlot import createPlot

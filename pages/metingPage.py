@@ -1,4 +1,3 @@
-from PyQt5 import uic
 from PyQt5.QtWidgets import QHBoxLayout, QStackedWidget, QWidget
 
 from components.mainMeting import Main
@@ -9,7 +8,7 @@ from components.patientSelect import PatientSelect
 
 class MetingPage(QWidget):
     def __init__(self, app):
-        super(MetingPage, self).__init__()
+        super().__init__()
         self.initPage(app)
 
     def initPage(self, app):
