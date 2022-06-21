@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget
 
 from handlers.createPlot import createPlot
 from handlers.hand_detect_module import handDetect
-from handlers.requestHandlers import sessionRequest, uploadRequest
+from handlers.requests import session_request, upload_request
 
 matplotlib.use("Qt5Agg")
 
@@ -302,11 +302,11 @@ async def handleRequests(
     app, token_type, token, patient_id, resultaten, imageNames, main
 ):
     status, s_id = await asyncio.ensure_future(
-        sessionRequest(token_type, token, patient_id)
+        session_request(token_type, token, patient_id)
     )
     if status == "Ok":
         for key in resultaten.keys():
-            status, res = await uploadRequest(
+            status, res = await upload_request(
                 token_type, token, s_id, resultaten[key], imageNames[key]
             )
             if status == "Failed":

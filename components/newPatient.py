@@ -7,7 +7,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget
 
-from handlers.requestHandlers import makePatientRequest
+from handlers.requests import make_patient_request
 
 
 class NewPatient(QWidget):
@@ -37,7 +37,7 @@ class NewPatient(QWidget):
                 and self.dateField.date().toPyDate() != ""
             ):
                 status, res = asyncio.run(
-                    makePatientRequest(
+                    make_patient_request(
                         self.app.token_type,
                         self.app.token,
                         self.patientNameField.text(),
