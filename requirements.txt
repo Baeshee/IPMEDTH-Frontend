@@ -65,6 +65,6 @@ tomli==2.0.1
 tomlkit==0.11.0
 typing_extensions==4.2.0
 urllib3==1.26.9
-virtualenv==20.15.0
+virtualenv==20.15.1
 wrapt==1.14.1
 yarl==1.7.2
