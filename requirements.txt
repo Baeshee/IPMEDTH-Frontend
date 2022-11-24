@@ -45,7 +45,7 @@ pre-commit-hooks==4.3.0
 protobuf==3.20.1
 pycodestyle==2.8.0
 pycparser==2.21
-pyflakes==2.4.0
+pyflakes==3.0.0
 pylint==2.15.3
 pyparsing==3.0.9
 PyQt5==5.15.7
